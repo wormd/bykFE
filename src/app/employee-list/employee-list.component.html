@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="col-lg-12">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+          </tr>
+        </div>
+        <tbody>
+          <tr *ngFor="let employee of employees">
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.surname }}</td>
+          </tr>
+        </tbody>
+      </div>
+    </div>
+  </div>
