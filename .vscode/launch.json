@@ -1,0 +1,12 @@
+{
+    "name": "Launch Chrome against localhost, with sourcemaps",
+    "type": "chrome",
+    "request": "launch",
+    "url": "http://localhost",
+    "sourceMaps": true,
+    "webRoot": "${workspaceRoot}",
+    "diagnosticLogging": true,
+    "sourceMapPathOverrides": {
+        "webpack:///./*": "${webRoot}/*"
+    }
+}

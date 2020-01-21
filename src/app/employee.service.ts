@@ -18,11 +18,11 @@ export class EmployeeService {
     return this.http.get<Employee[]>(this.url);
   }
 
-  public create(employee: Employee) {
+  public save(employee: Employee) {
     return this.http.post<Employee>(this.url, employee);
   }
 
   public delete(id: string) {
-    return this.http.delete(this.url+"/"+id);
+    return this.http.delete(this.url+"/"+id, {responseType: 'text'});
   }
 }
