@@ -8,19 +8,22 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-2">
+    <nav class="toc py-3 bg-blue">
       <div class="">
-        <ul class="py-3">
+        <ul class="nav flex-column">
           <li class="">
-            <a routerLink="/employees" class="btn btn-info">List Employees</a>
+            <a routerLink="/employees" class="toc-link">Employees</a>
           </li>
-          <li class="">
-            <a routerLink="/employee-add" class="btn btn-info">Add User</a>
+          <li>
+            <a routerLink="/cashbook" class="toc-link">Cashbook</a>
           </li>
+          <!-- <li>
+            <a routerLink="/accounts" class="toc-link">Accounts</a>
+          </li> -->
         </ul>
       </div>
-    </div>
-    <div class="col-lg-10 py-3 table table-bordered table-striped">  
+    </nav>
+    <div class="col-lg-10 py-3 table table-striped">  
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Employee } from '../employee';
+import { Employee } from '../_model/employee';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EmployeeService } from '../employee.service';
+import { EmployeeService } from '../_service/employee.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -15,7 +15,7 @@ export class EmployeeFormComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
     private employeeService: EmployeeService) {
       this.employee = new Employee();
-     }
+    }
 
   onSubmit() {
     this.employeeService.save(this.employee).subscribe(data => this.gotoEmployeeList());
