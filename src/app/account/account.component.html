@@ -1,0 +1,41 @@
+<div class="col-lg-12">
+  <app-cash-book-line-form></app-cash-book-line-form>
+  <p>
+      <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+        Show Accounts
+      </button>
+  </p>
+  <div id="collapseAccount" [ngbCollapse]="isCollapsed">
+      <app-account-list></app-account-list>
+  </div>
+
+  
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th scope="col" colspan="3"></th><!-- date -->
+      <th scope="col" colspan="2" *ngFor="let account of accounts">
+          {{ account.name }}
+      </th>
+    </tr>
+    <tr>
+      <th scope="col">Data</th>
+      <th scope="col">Valuta</th>
+      <th scope="col">Description</th>
+      <ng-container *ngFor="let account of accounts">
+        <th scope="col">In</th>
+        <th scope="col">Out</th>
+      </ng-container>
+    </tr>
+  <tbody>
+    <tr *ngFor="let line of cashbook">
+      <td>{{ line.date }}</td>
+      <td>{{ line.valuta }}</td>
+      <td>{{ line.desc }}</td>
+      <td>{{ line.in }}</td>
+      <td>{{ line.out }}</td>
+      <!-- <td><button type="button" class="close" (click)="delete(employee.id)">&times;</button></td> -->
+    </tr>
+  </tbody>
+  </table>
+</div>

@@ -22,4 +22,11 @@ export class AccountService {
     return this.http.post<Account>(this.url, account);
   }
 
+  public find(id: string): Observable<Account[]> {
+    if (id !== null) {
+      return this.http.get<Account[]>(this.url+'?ids='+id);
+    }
+    return this.http.get<Account[]>(this.url);
+  }
+
 }

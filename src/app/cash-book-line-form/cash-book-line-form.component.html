@@ -1,0 +1,41 @@
+<div class="col-lg-6">
+
+    <p>Quick Add </p>
+    <form class="form-inline" (ngSubmit)="onSubmit()" #lineForm="ngForm">
+        <div class="form-group">
+
+            <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Description" name="descr" [(ngModel)]="cashBookLine.name" required #desc="ngModel" />
+
+        </div>
+        <!-- <div [hidden]="desc.valid || desc.pristine" class="alert alert-danger">Description Required</div> -->
+
+        <div class="form-group">
+
+            <input type="number" class="form-control mb-2 mr-sm-2" placeholder="1000.00" name="total" [(ngModel)]="cashBookLine.amount" required #cash="ngModel" />            
+
+        </div>
+        <!-- <div [hidden]="cash.valid || cash.pristine" class="alert alert-danger">Number Required</div> -->
+
+        <div class="form-group">
+            <input type="text" class="form=control mb-2 mr-sm-2" placeholder="Origin"
+                    [(ngModel)]="cashBookLine."
+                    [(ngbTypeahead)]="search"
+                    [inputFormatter]="formatter"
+                    [outputFormatter]="formatter"
+                    [editable]='false' />
+
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form=control mb-2 mr-sm-2" placeholder="Target"
+                    [(ngModel)]="cashBookLine."
+                    [(ngbTypeahead)]="search"
+                    [inputFormatter]="formatter"
+                    [outputFormatter]="formatter"
+                    [editable]='false' />
+        </div>
+
+        <button type="submit" class="btn btn-success mb-2 mr-sm-2" [disabled]="!lineForm.form.valid">Add</button>
+    </form>
+    {{cashBookLine | json}}
+</div>
