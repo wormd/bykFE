@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CashBookLineService } from '../_service/cash-book-line.service';
+import { TransactionService } from '../_service/transaction.service';
 import { Router } from '@angular/router';
-import { CashBookLine } from '../_model/cash-book-line';
+import { Transaction } from '../_model/transaction';
 import { AccountService } from '../_service/account.service';
 import { Account } from '../_model/account';
 
@@ -13,11 +13,11 @@ import { Account } from '../_model/account';
 })
 export class CashBookComponent implements OnInit {
 
-  private cashbook: CashBookLine[];
+  private cashbook: Transaction[];
   private accounts: Account[];
 
-  constructor(private router: Router, 
-    private lineService: CashBookLineService,
+  constructor(private router: Router,
+    private lineService: TransactionService,
     private accountService: AccountService) { }
 
   ngOnInit() {

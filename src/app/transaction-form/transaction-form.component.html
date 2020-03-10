@@ -1,0 +1,41 @@
+<div class="col-lg-6">
+
+    <p>Quick Add </p>
+    <form class="form-inline" (ngSubmit)="onSubmit()" #lineForm="ngForm">
+        <div class="form-group">
+
+            <input type="text" class="form-control mb-2 mr-sm-2"
+                    placeholder="Description"
+                    name="descr"
+                    [(ngModel)]="transaction.desc"
+                    required
+                    #desc="ngModel" />
+
+        </div>
+        <!-- <div [hidden]="desc.valid || desc.pristine" class="alert alert-danger">Description Required</div> -->
+
+        <div class="form-group">
+
+            <input type="number" class="form-control mb-2 mr-sm-2"
+                    placeholder="1000.00" name="total"
+                    [(ngModel)]="transaction.amount"
+                    required
+                    #cash="ngModel" />
+
+        </div>
+
+        <div class="form-group">
+            <input id='quickadd' type="text" name='quickadd' class="form-control mb-2 mr-sm-2" placeholder="Target Account"
+                    [(ngModel)]="model"
+                    [(ngbTypeahead)]="search"
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    required
+                    [editable]='false' />
+        </div>
+
+        <button type="submit" class="btn btn-success mb-2 mr-sm-2" [disabled]="!lineForm.form.valid">Add</button>
+
+    </form>
+    {{model | json}}
+</div>

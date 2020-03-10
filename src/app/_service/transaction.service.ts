@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CashBookLine } from '../_model/cash-book-line';
+import { Transaction } from '../_model/transaction';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CashBookLineService {
+export class TransactionService {
 
   private url: string;
 
@@ -14,19 +14,19 @@ export class CashBookLineService {
     this.url = 'http://localhost:8080/cashbook';
    }
 
-   public find(after: Date, before: Date): Observable<CashBookLine[]> {
-    return this.http.get<CashBookLine[]>(this.url);
+   public find(after: Date, before: Date): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.url);
   }
 
-  public save(line: CashBookLine) {
-    return this.http.post<CashBookLine>(this.url, line);
+  public save(line: Transaction) {
+    return this.http.post<Transaction>(this.url, line);
   }
 
   public delete(id: string) {
     return this.http.delete(this.url+"/"+id, {responseType: 'text'});
   }
 
-  public edit(line: CashBookLine) {
+  public edit(line: Transaction) {
     return this.http.put(this.url, line);
   }
 }

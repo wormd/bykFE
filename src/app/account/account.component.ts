@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CashBookLineService } from '../_service/cash-book-line.service';
+import { TransactionService } from '../_service/transaction.service';
 import { AccountService } from '../_service/account.service';
 
-import { CashBookLine } from '../_model/cash-book-line';
+import { Transaction } from '../_model/transaction';
 import { Account } from '../_model/account';
 
 @Component({
@@ -12,22 +12,24 @@ import { Account } from '../_model/account';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  private cashbook: CashBookLine[];
-  private accounts: Account[];
+  public cashbook: Transaction[];
+  public accounts: Account[];
+  public account: Account;
   private list: string;
   public isCollapsed = true;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, 
-    private lineService: CashBookLineService,
+  constructor(private activatedRoute: ActivatedRoute, private router: Router,
+    private transactionService: TransactionService,
     private accountService: AccountService) { }
 
   ngOnInit() {
-    this.list = this.activatedRoute.snapshot.queryParamMap.get("ids");
-    this.accountService.find(this.list).subscribe(data => {this.accounts = data});
+    // this.list = this.activatedRoute.snapshot.queryParamMap.get("ids");
+    this.accountService.findAll().subscribe(data => {this.accounts = data});
+    //this.account = this.accounts[0];
   }
 
   delete(id: string) {
-    this.lineService.delete(id).subscribe(data => this.ngOnInit());
+    this.transactionService.delete(id).subscribe(data => this.ngOnInit());
   }
 
   show(id: string) {
@@ -37,7 +39,7 @@ export class AccountComponent implements OnInit {
     let before: Date = new Date();
     before.setMonth(12);
     before.setDate(31);
-    this.lineService.find(after, before).subscribe(data => {this.cashbook = data});
+    this.transactionService.find(after, before).subscribe(data => {this.cashbook = data});
     this.accountService.find(id).subscribe(data => {this.accounts = data});
   }
 }
