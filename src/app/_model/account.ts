@@ -1,5 +1,9 @@
+import { Transaction } from '../_model/transaction';
+
 export class Account {
-    id: number;
+    id: string;
     name: string;
     number: string;
+    transactions: Transaction[];
+    
 }

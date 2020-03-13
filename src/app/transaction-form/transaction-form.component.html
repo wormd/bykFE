@@ -1,41 +1,60 @@
-<div class="col-lg-6">
+<div class="">
 
     <p>Quick Add </p>
     <form class="form-inline" (ngSubmit)="onSubmit()" #lineForm="ngForm">
-        <div class="form-group">
 
-            <input type="text" class="form-control mb-2 mr-sm-2"
+        <div class="form-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="dp" [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+            </div>
+        </div>
+
+            <input type="text" class="form-control mb-2 mr-sm-1"
                     placeholder="Description"
                     name="descr"
                     [(ngModel)]="transaction.desc"
                     required
                     #desc="ngModel" />
 
-        </div>
         <!-- <div [hidden]="desc.valid || desc.pristine" class="alert alert-danger">Description Required</div> -->
 
-        <div class="form-group">
 
-            <input type="number" class="form-control mb-2 mr-sm-2"
+            <input type="number" class="form-control mb-2 mr-sm-1"
                     placeholder="1000.00" name="total"
                     [(ngModel)]="transaction.amount"
                     required
                     #cash="ngModel" />
 
-        </div>
 
-        <div class="form-group">
-            <input id='quickadd' type="text" name='quickadd' class="form-control mb-2 mr-sm-2" placeholder="Target Account"
-                    [(ngModel)]="model"
-                    [(ngbTypeahead)]="search"
+            <input id='target-account' type="text" name='target-account' class="form-control mb-2 mr-sm-2" placeholder="Target Account"
+                    [(ngModel)]="targetModel"
+                    [(ngbTypeahead)]="searchTarget"
                     [inputFormatter]="formatter"
                     [resultFormatter]="formatter"
                     required
                     [editable]='false' />
+
+            <input id='origin-account' type="text" name='origin-account' class="form-control mb-2 mr-sm-2" placeholder="Origin Account"
+                    [(ngModel)]="originModel"
+                    [(ngbTypeahead)]="searchOrigin"
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]='false' />
+        <!-- Don't show submit button until the origin account is loaded -->
+        <div *ngIf="showingAccount">
+            <button type="submit" class="btn btn-success mb-2 mr-sm-2" [disabled]="!lineForm.form.valid">Add</button>
         </div>
 
-        <button type="submit" class="btn btn-success mb-2 mr-sm-2" [disabled]="!lineForm.form.valid">Add</button>
-
     </form>
-    {{model | json}}
+    <ngb-alert *ngIf="sameAccount" class="mt-3 mb-0" type="danger" [dismissible]="false">
+        You can't target a transaction on the same origin account
+    </ngb-alert>
+    <ngb-alert *ngIf="submitted" class="mt-3 mb-0" type="success" [dismissible]="false">
+        Submitted!
+    </ngb-alert>
+
+    origin: {{originModel | json}}<br/>
+    transaction: {{ transaction | json }}
 </div>

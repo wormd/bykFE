@@ -1,4 +1,4 @@
-  <app-transaction-form></app-transaction-form>
+  <app-transaction-form [showingAccount]='account'></app-transaction-form>
   <p>
       <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
               [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
@@ -12,18 +12,12 @@
 
   <table class="table table-bordered table-striped">
     <tr>
-      <th scope="col" colspan="3"></th><!-- date -->
-      <th scope="col" colspan="2" *ngFor="let account of accounts">
-          {{ account.name }}
-      </th>
-    </tr>
-    <tr>
       <th scope="col">Data</th>
       <th scope="col">Description</th>
       <th scope="col">Amount</th>
       <th scope="col">Target</th>
   <tbody>
-    <tr *ngFor="let line of cashbook">
+    <tr *ngFor="let line of transactions">
       <td>{{ line.date }}</td>
       <td>{{ line.desc }}</td>
       <td>{{ line.amount }}</td>

@@ -1,10 +1,9 @@
+
 export class Transaction {
-    id: number;
+    id: string;
     desc: String;
-    raw_desc: String;
+    rawDescr: String;
     amount: number;
     date: Date;
-    account_id: number;
-    target_id: number;
-    twin: number;
+    target: string;
 }

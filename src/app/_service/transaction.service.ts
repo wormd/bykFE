@@ -11,15 +11,15 @@ export class TransactionService {
   private url: string;
 
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:8080/cashbook';
+    this.url = 'http://localhost:8080/accounts';
    }
 
    public find(after: Date, before: Date): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(this.url);
   }
 
-  public save(line: Transaction) {
-    return this.http.post<Transaction>(this.url, line);
+  public add(accountId: string, line: Transaction) {
+    return this.http.post<Transaction>(this.url+'/'+accountId+'/transactions', line);
   }
 
   public delete(id: string) {
