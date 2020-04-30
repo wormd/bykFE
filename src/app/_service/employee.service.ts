@@ -10,11 +10,11 @@ export class EmployeeService {
 
   private url: string;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.url = 'http://localhost:8080/employees';
   }
 
-  public findAll(): Observable<Employee[]> {
+  public getAll(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.url);
   }
 
@@ -23,6 +23,6 @@ export class EmployeeService {
   }
 
   public delete(id: string) {
-    return this.http.delete(this.url+"/"+id, {responseType: 'text'});
+    return this.http.delete(this.url + '/' + id, {responseType: 'text'});
   }
 }

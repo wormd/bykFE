@@ -13,7 +13,7 @@ export class EmployeeFormComponent implements OnInit {
 
   employee: Employee;
   constructor(private route: ActivatedRoute, private router: Router,
-    private employeeService: EmployeeService) {
+              private employeeService: EmployeeService) {
       this.employee = new Employee();
     }
 

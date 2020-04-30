@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-
-import { AccountService } from '../_service/account.service';
 import { Account } from '../_model/account';
 
 
@@ -13,13 +11,11 @@ import { Account } from '../_model/account';
 })
 export class AccountListComponent implements OnInit {
 
-  private accounts: Account[];
+  @Input() accounts: Account[];
 
-  constructor(private router: Router, 
-    private accountService: AccountService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router) {}
 
-  ngOnInit() {
-    this.accountService.findAll().subscribe(data => {this.accounts = data});
-  }
+  ngOnInit() {}
 
 }

@@ -1,0 +1,28 @@
+<div class="ml-2">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink>Add Transaction</a>
+    <ng-template ngbNavContent>
+      <app-transaction-form [showingAccount]="account" [accounts]="accounts"></app-transaction-form>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Show Accounts</a>
+    <ng-template ngbNavContent>
+      <app-account-list [accounts]="accounts"></app-account-list>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Add Account</a>
+    <ng-template ngbNavContent>
+      <app-account-form [accounts]="accounts"></app-account-form>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="border-right border-left border-bottom"></div>
+
+<ng-container *ngIf="account"><h2 > Showing {{ account.name }}</h2></ng-container>
+
+<app-transactions-list [account]="account" [accounts]="accounts" ></app-transactions-list>
+</div>

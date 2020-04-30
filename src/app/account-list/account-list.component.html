@@ -1,7 +1,7 @@
-<ngb-alert class="mt-3 mb-0" type="info" [dismissible]="false">
+<div class="card-body">
     <ul class='list-inline'>
         <li class='list-inline-item' scope="col" colspan="" *ngFor="let account of accounts">
-            <a [routerLink]="['/accounts', account.id]" class="toc-link">{{ account.name }}</a>
+            <a [routerLink]="['/account', account.id]" class="toc-link">{{ account.name }}</a>
         </li>
     </ul>
-</ngb-alert>
+</div>

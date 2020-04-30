@@ -1,8 +1,8 @@
 
 export class Transaction {
     id: string;
-    desc: String;
-    rawDescr: String;
+    descr: string;
+    rawDescr: string;
     amount: number;
     date: Date;
     target: string;

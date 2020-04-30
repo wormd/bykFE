@@ -17,22 +17,23 @@ export class CashBookComponent implements OnInit {
   private accounts: Account[];
 
   constructor(private router: Router,
-    private lineService: TransactionService,
-    private accountService: AccountService) { }
+              private lineService: TransactionService,
+              private accountService: AccountService) { }
 
   ngOnInit() {
-    let after: Date = new Date();
+    const after: Date = new Date();
     after.setMonth(1);
     after.setDate(1);
-    let before: Date = new Date();
+    const before: Date = new Date();
     before.setMonth(12);
     before.setDate(31);
-    this.lineService.find(after, before).subscribe(data => {this.cashbook = data});
-    this.accountService.findAll().subscribe(data => {this.accounts = data});
+    this.lineService.find(after, before).subscribe(data => { this.cashbook = data; });
+    this.accountService.update();
+    this.accountService.getAll().subscribe(data => { this.accounts = data; });
   }
 
-  delete(id: string) {
-    this.lineService.delete(id).subscribe(data => this.ngOnInit());
+  delete(id: number) {
+    // this.lineService.delete(id).subscribe(data => this.ngOnInit());
   }
 
 }

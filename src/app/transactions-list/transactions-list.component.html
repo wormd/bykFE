@@ -1,0 +1,23 @@
+  <table class="table table-bordered table-striped mt-3">
+    <thead>
+    <tr>
+      <th scope="col" style="width: 8%">Data</th>
+      <th scope="col" style="width: 72%">Description</th>
+      <th scope="col" style="">Amount</th>
+      <th scope="col" style="">Target</th>
+      <th scope="col">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let line of transactions" class="pt-1 pb-1">
+      <td>{{ line.date }}</td>
+      <td>{{ line.descr }}</td>
+      <td>&euro; {{ showAmount(line.amount) }}</td>
+      <td>{{ getAccountName(line.target) }}</td>
+      <td><button type="button" class="btn fa fa-info bg-transparent"></button>
+<!--        (click)="goTo(line.id)-->
+      <button type="button" class="btn fa fa-times bg-transparent"></button></td>
+<!--      (click)="delTransaction(account.id, line.id)-->
+    </tr>
+    </tbody>
+  </table>

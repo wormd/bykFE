@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
-import { CashBookComponent } from './cash-book/cash-book.component'
+import { CashBookComponent } from './cash-book/cash-book.component';
 
 import { EmployeeService } from './_service/employee.service';
-import { AccountComponent } from './account/account.component';
+import { TransactionsListComponent } from './transactions-list/transactions-list.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { TransactionFormComponent } from './transaction-form/transaction-form.component';
+import { AccountPageComponent } from './account-page/account-page.component';
+import { AccountFormComponent } from './account-form/account-form.component';
 
 
 @NgModule({
@@ -22,10 +24,12 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
     AppComponent,
     EmployeeListComponent,
     EmployeeFormComponent,
-    CashBookComponent,
-    AccountComponent,
+    // CashBookComponent,
+    AccountPageComponent,
     AccountListComponent,
+    TransactionsListComponent,
     TransactionFormComponent,
+    AccountFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +39,7 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
     ReactiveFormsModule,
     NgbModule,
   ],
-  providers: [EmployeeService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

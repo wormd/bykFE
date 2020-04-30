@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
-  
+
   employees: Employee[];
 
   constructor(private router: Router, private employeeService: EmployeeService) { }
 
   ngOnInit() {
-    this.employeeService.findAll().subscribe(data => {
+    this.employeeService.getAll().subscribe(data => {
       this.employees = data;
     });
   }

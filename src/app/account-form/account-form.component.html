@@ -1,0 +1,33 @@
+<div class="card-body">
+  <form class="form-inline card-text" (ngSubmit)="onSubmit()" #lineForm="ngForm">
+
+    <input type="text" class="form-control mr-2"
+           placeholder="Name"
+           name="name"
+           [class.submit-success]="submitted"
+           [class.submit-error]="sameName"
+           [(ngModel)]="account.name"
+           required/>
+
+    <input type="text" class="form-control mr-2"
+           placeholder="Description"
+           name="descr"
+           [class.submit-success]="submitted"
+           [class.submit-error]="sameName"
+           [(ngModel)]="account.descr"
+           required/>
+
+      <button type="submit" class="btn btn-success" [disabled]="!lineForm.form.valid">Add</button>
+
+  </form>
+  <ngb-alert *ngIf="sameName" class="mt-3 mb-0" type="danger" [dismissible]="false">
+    You can't get another account with the same name
+  </ngb-alert>
+  <!--    <ngb-alert *ngIf="submitted" class="mt-3 mb-0" type="success" [dismissible]="false">-->
+  <!--        Submitted!-->
+  <!--    </ngb-alert>-->
+
+  <!--    origin: {{originModel | json}}<br/>-->
+  <!--    transaction: {{ transaction | json }}-->
+
+</div>
