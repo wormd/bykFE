@@ -17,6 +17,7 @@ import { AccountListComponent } from './account-list/account-list.component';
 import { TransactionFormComponent } from './transaction-form/transaction-form.component';
 import { AccountPageComponent } from './account-page/account-page.component';
 import { AccountFormComponent } from './account-form/account-form.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { AccountFormComponent } from './account-form/account-form.component';
     TransactionsListComponent,
     TransactionFormComponent,
     AccountFormComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,5 +5,6 @@ export class Transaction {
     rawDescr: string;
     amount: number;
     date: Date;
+    origin: string;
     target: string;
 }

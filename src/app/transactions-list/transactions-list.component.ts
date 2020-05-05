@@ -37,6 +37,7 @@ export class TransactionsListComponent implements OnInit {
   }
 
   getAccountName(accountId: string): string {
+    console.log('aaa ' + accountId);
     return this.accounts.find(x => +x.id === +accountId).name;
   }
 }
