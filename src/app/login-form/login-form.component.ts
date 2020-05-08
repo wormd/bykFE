@@ -33,9 +33,11 @@ export class LoginFormComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.loading = true;
+
     this.authService.login(this.f.user.value, this.f.pwd.value).subscribe(d => {
       this.router.navigate(['/']);
     }, error => {
+      console.log(error)
       this.error = error;
       this.loading = false;
     });

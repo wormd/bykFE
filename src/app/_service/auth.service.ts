@@ -7,22 +7,36 @@ import {BehaviorSubject, Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSub: BehaviorSubject<any>;
+  private url: String;
   public currentUser: Observable<any>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.url = 'http://localhost:8080';
+  }
+
+  getCurrentUser() {
+    this.currentUser = this.http.get(this.url+'/currentUser');
+    return this.currentUser;
+  }
 
   login(user, pwd) {
-    return this.http.post<any>('/users/auth', { user, pwd })
-      .pipe(map(u => {
-        localStorage.setItem('currentUser', JSON.stringify(u));
-        this.currentUserSub.next(u);
-        return u;
-      }));
+    const ret = this.http.post<any>(this.url+'/login', {"username":user, "password":pwd})
+    ret.subscribe(u => {
+        localStorage.setItem('token', u['token']);
+      });
+    return ret;
+  }
+
+  loggedIn() {
+    const token = localStorage.getItem('token')
+    if (token) {
+      return true
+    }
+    return false
   }
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.currentUserSub.next(null);
+    this.currentUser = null;
   }
 }
