@@ -1,6 +1,6 @@
 export class User {
   id: string;
-  name: string;
-  token: string;
+  username: string;
   role: string;
+  enabled: boolean;
 }

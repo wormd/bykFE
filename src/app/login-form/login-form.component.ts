@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../_service/auth.service';
-import {User} from '../_model/user';
 
 @Component({
   selector: 'app-login-form',
@@ -13,13 +12,17 @@ export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
-  error: string;
+  error = false;
+  errormsg: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private formBuilder: FormBuilder,
               private authService: AuthService) { }
 
   ngOnInit(): void {
+    if (this.authService.loggedIn()) {
+      this.router.navigate(['/']);
+    }
     this.loginForm = this.formBuilder.group({
       user: ['', Validators.required],
       pwd: ['', Validators.required]
@@ -35,10 +38,13 @@ export class LoginFormComponent implements OnInit {
     this.loading = true;
 
     this.authService.login(this.f.user.value, this.f.pwd.value).subscribe(d => {
+      this.submitted = true;
       this.router.navigate(['/']);
-    }, error => {
-      console.log(error)
-      this.error = error;
+      location.reload();
+    }, e => {
+      // TODO: fix error handling
+      this.error = true;
+      this.errormsg = e;
       this.loading = false;
     });
   }

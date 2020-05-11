@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from './_service/auth.service';
 import {User} from './_model/user';
@@ -11,11 +11,10 @@ import {User} from './_model/user';
 export class AppComponent {
   title = 'BykFE';
   user: User;
+  navShow = true;
+  userShow = false;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,) {
-
+  constructor(private router: Router, private authService: AuthService, ) {
     if (authService.loggedIn()) {
       this.authService.getCurrentUser().subscribe(
         x => this.user = x,
@@ -29,4 +28,5 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
 }

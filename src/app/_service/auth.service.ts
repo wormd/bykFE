@@ -1,42 +1,43 @@
 import { Injectable } from '@angular/core';
-import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {User} from '../_model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url: String;
-  public currentUser: Observable<any>;
+  private url: string;
+  private currentUser = new Subject();
 
   constructor(private http: HttpClient) {
     this.url = 'http://localhost:8080';
   }
 
-  getCurrentUser() {
-    this.currentUser = this.http.get(this.url+'/currentUser');
-    return this.currentUser;
+  getCurrentUser(): Observable<any> {
+      this.http.get<User>(this.url + '/currentUser').subscribe(i => this.currentUser.next(i));
+      return this.currentUser.asObservable();
   }
 
   login(user, pwd) {
-    const ret = this.http.post<any>(this.url+'/login', {"username":user, "password":pwd})
-    ret.subscribe(u => {
-        localStorage.setItem('token', u['token']);
+    const ret = new Subject();
+    this.http.post<any>(this.url + '/login',
+      {username: user, password: pwd})
+      .subscribe(i => {
+        localStorage.setItem('token', i.token);
+        ret.next(i);
+        this.getCurrentUser();
       });
-    return ret;
+    return ret.asObservable();
   }
 
   loggedIn() {
-    const token = localStorage.getItem('token')
-    if (token) {
-      return true
-    }
-    return false
+    const token = localStorage.getItem('token');
+    return !!token;
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUser = null;
+    localStorage.removeItem('token');
+    this.currentUser = new Subject();
   }
 }

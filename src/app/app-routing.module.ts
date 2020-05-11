@@ -6,6 +6,7 @@ import { CashBookComponent } from './cash-book/cash-book.component';
 import { TransactionFormComponent } from './transaction-form/transaction-form.component';
 import {AccountPageComponent} from './account-page/account-page.component';
 import {LoginFormComponent} from './login-form/login-form.component';
+import {HomepageComponent} from './homepage/homepage.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'account/:id', component: AccountPageComponent},
   { path: 'transaction-add', component: TransactionFormComponent},
   { path: 'login', component: LoginFormComponent },
+  { path: '', component: HomepageComponent },
 ];
 
 @NgModule({

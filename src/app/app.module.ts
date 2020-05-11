@@ -18,6 +18,7 @@ import { AccountPageComponent } from './account-page/account-page.component';
 import { AccountFormComponent } from './account-form/account-form.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { JwtInterceptor } from './_interceptor/jwt.interceptor';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { JwtInterceptor } from './_interceptor/jwt.interceptor';
     TransactionFormComponent,
     AccountFormComponent,
     LoginFormComponent,
+    HomepageComponent,
   ],
   imports: [
     BrowserModule,

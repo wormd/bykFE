@@ -9,3 +9,7 @@ button.calendar, button.calendar:active {
 .rounded {
   border: 0.25rem;
 }
+
+a:hover {
+  cursor:pointer;
+}
