@@ -19,11 +19,13 @@ export class AccountPageComponent implements OnInit {
   account: any;
   private routedAccountId = 0;
 
+
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private accountService: AccountService,
               private transactionService: TransactionService,
-              private location: Location) { }
+              private location: Location) {
+  }
 
   ngOnInit(): void {
     this.accountService.update();
@@ -33,24 +35,12 @@ export class AccountPageComponent implements OnInit {
         // not receiving account/:id means it's the mainpage, so we set to the first account in the DB.
         this.setAccount(par);
         this.location.go('/account/' + this.routedAccountId + '');
-        this.getTransactions();
       });
     });
   }
 
-  getTransactions() {
-    const today: Date = new Date(Date.now());
-    const after: Date = new Date(today.getFullYear(), today.getMonth(), 1);
-    const before: Date = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    this.transactionService.setFilters(this.account.id, after, before);
-  }
-
   setAccount(par) {
-    if (!this.routedAccountId) {
-      this.routedAccountId = 0;
-    } else {
-      this.routedAccountId = par.id;
-    }
+    (!this.routedAccountId) ? this.routedAccountId = 0 : this.routedAccountId = par.id;
     this.account = this.accounts.find(x => +x.id === +this.routedAccountId);
   }
 }

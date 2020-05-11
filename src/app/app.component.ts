@@ -16,11 +16,10 @@ export class AppComponent {
 
   constructor(private router: Router, private authService: AuthService, ) {
     if (authService.loggedIn()) {
-      this.authService.getCurrentUser().subscribe(
-        x => this.user = x,
-        error => this.router.navigate(['/login']));
+      this.authService.getCurrentUserOrGoLogin().subscribe(
+        x => {this.user = x; });
     } else {
-      this.router.navigate(['/login']);
+      this.logout();
     }
   }
 

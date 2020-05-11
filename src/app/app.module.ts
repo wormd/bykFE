@@ -19,6 +19,7 @@ import { AccountFormComponent } from './account-form/account-form.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { JwtInterceptor } from './_interceptor/jwt.interceptor';
 import { HomepageComponent } from './homepage/homepage.component';
+import { FilterPaginationComponent } from './filter-pagination/filter-pagination.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { HomepageComponent } from './homepage/homepage.component';
     AccountFormComponent,
     LoginFormComponent,
     HomepageComponent,
+    FilterPaginationComponent,
   ],
   imports: [
     BrowserModule,

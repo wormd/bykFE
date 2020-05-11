@@ -22,7 +22,7 @@
 
 <div [ngbNavOutlet]="nav" class="border-right border-left border-bottom"></div>
 
-<ng-container *ngIf="account"><h2 > Showing {{ account.name }}</h2></ng-container>
-
-<app-transactions-list [account]="account" [accounts]="accounts" ></app-transactions-list>
+<div *ngIf="account && accounts">
+  <app-transactions-list [account]="account" [accounts]="accounts"></app-transactions-list>
+</div>
 </div>

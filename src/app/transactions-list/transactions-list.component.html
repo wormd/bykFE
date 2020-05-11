@@ -1,4 +1,19 @@
-  <table class="table table-bordered table-striped mt-3">
+<nav class="navbar navbar-expand-lg">
+  <h2> Showing {{ account.name }}</h2>
+  <h3>Month: </h3>
+  <app-filter-pagination
+    [labels]="months"
+    [currentIndex]="monthIndex"
+    (filterclick)="changeMonth($event)">
+  </app-filter-pagination>
+  <h3>Year: </h3>
+  <app-filter-pagination
+    [labels]="years"
+    [currentIndex]="yearIndex"
+    (filterclick)="changeYear($event)">
+  </app-filter-pagination>
+</nav>
+<table class="table table-bordered table-striped mt-3">
     <thead>
     <tr>
       <th scope="col" style="width: 8%">Data</th>
@@ -9,6 +24,12 @@
     </tr>
     </thead>
     <tbody>
+    <tr *ngIf="!transactions" class="spinner-border" role="status">
+      <td class="d-flex justify-content-center sr-only" colspan="5">Loading...</td>
+    </tr>
+    <tr *ngIf="transactions && transactions.length === 0">
+      <td colspan="5" class="text-center">This period is empty</td>
+    </tr>
     <tr *ngFor="let line of transactions" class="pt-1 pb-1">
       <td>{{ line.date }}</td>
       <td>{{ line.descr }}</td>
