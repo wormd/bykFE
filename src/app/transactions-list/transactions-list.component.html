@@ -1,18 +1,28 @@
 <nav class="navbar navbar-expand-lg">
   <h2> Showing {{ account.name }}</h2>
-  <h3>Month: </h3>
+  <input id='change-account' type="text" class="form-control col-xl-2"
+         placeholder="Select Account"
+         [(ngModel)]="accountModel"
+         [ngbTypeahead]="accountSearch"
+         [inputFormatter]="formatter"
+         [resultFormatter]="formatter"
+         [editable]='false'
+         (selectItem)="changeAccount($event)"/>
+
+  <h2>Month: </h2>
   <app-filter-pagination
     [labels]="months"
     [currentIndex]="monthIndex"
     (filterclick)="changeMonth($event)">
   </app-filter-pagination>
-  <h3>Year: </h3>
+  <h2>Year: </h2>
   <app-filter-pagination
     [labels]="years"
     [currentIndex]="yearIndex"
     (filterclick)="changeYear($event)">
   </app-filter-pagination>
 </nav>
+
 <table class="table table-bordered table-striped mt-3">
     <thead>
     <tr>
@@ -20,7 +30,7 @@
       <th scope="col" style="width: 72%">Description</th>
       <th scope="col" style="">Amount</th>
       <th scope="col" style="">Target</th>
-      <th scope="col">&nbsp;</th>
+      <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>

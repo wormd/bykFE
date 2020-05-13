@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor(private router: Router, private authService: AuthService, ) {
     if (authService.loggedIn()) {
-      this.authService.getCurrentUserOrGoLogin().subscribe(
+      this.authService.getCurrentUser().subscribe(
         x => {this.user = x; });
     } else {
       this.logout();

@@ -14,9 +14,8 @@ export class AuthService {
     this.url = 'http://localhost:8080';
   }
 
-  getCurrentUserOrGoLogin(): Observable<any> {
-      this.http.get<User>(this.url + '/currentUser').subscribe(i => this.currentUser.next(i),
-        error => this.logout());
+  getCurrentUser(): Observable<any> {
+      this.http.get<User>(this.url + '/currentUser').subscribe(i => this.currentUser.next(i));
       return this.currentUser.asObservable();
   }
 
@@ -27,7 +26,7 @@ export class AuthService {
       .subscribe(i => {
         localStorage.setItem('token', i.token);
         ret.next(i);
-        this.getCurrentUserOrGoLogin();
+        this.getCurrentUser();
       });
     return ret.asObservable();
   }
