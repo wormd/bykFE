@@ -11,17 +11,17 @@ export class TransactionService {
   private readonly url: string;
 
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:8080/accounts';
+    this.url = 'http://localhost:8080/';
    }
 
-  public add(accountId: string, line: Transaction) {
+  public add(line: Transaction) {
     line.date.toISOString().slice(0, 10);
 
-    return this.http.post<Transaction>(this.url + '/' + accountId + '/transactions', line);
+    return this.http.post<Transaction>(this.url + 'transactions/', line);
   }
 
-  public delete(id: string) {
-    return this.http.delete(this.url + '/' + id, {responseType: 'text'});
+  public delete(accId: string, transId: string) {
+    return this.http.delete(this.url + 'account/' + accId + '/transactions/' + transId); // , {responseType: 'text'});
   }
 
   public edit(line: Transaction) {
@@ -31,7 +31,7 @@ export class TransactionService {
    public get(id: string, after: Date, before: Date) {
     const params = {after: after.toISOString().slice(0, 10),
       before: before.toISOString().slice(0, 10)};
-    const url = this.url + '/' + id + '/transactions/';
+    const url = this.url + 'accounts/' + id + '/transactions/';
     return this.http.get<Transaction[]>(url, {params});
   }
 }

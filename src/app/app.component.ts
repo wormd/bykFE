@@ -13,6 +13,7 @@ export class AppComponent {
   user: User;
   navShow = true;
   userShow = false;
+  dropdownShow = true;
 
   constructor(private router: Router, private authService: AuthService, ) {
     if (authService.loggedIn()) {

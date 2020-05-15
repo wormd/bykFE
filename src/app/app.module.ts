@@ -19,7 +19,8 @@ import { AccountFormComponent } from './account-form/account-form.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { JwtInterceptor } from './_interceptor/jwt.interceptor';
 import { HomepageComponent } from './homepage/homepage.component';
-import { FilterPaginationComponent } from './filter-pagination/filter-pagination.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -35,7 +36,11 @@ import { FilterPaginationComponent } from './filter-pagination/filter-pagination
     AccountFormComponent,
     LoginFormComponent,
     HomepageComponent,
-    FilterPaginationComponent,
+    PaginationComponent,
+    ConfirmDialogComponent,
+  ],
+  entryComponents: [
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

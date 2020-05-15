@@ -10,8 +10,9 @@ import {AccountService} from '../_service/account.service';
 export class AccountFormComponent implements OnInit {
 
   account = new Account();
-  sameName = false;
   submitted = false;
+  error = false;
+  errorMsg: string;
 
   @Input()
   accounts: Account[];
@@ -22,14 +23,14 @@ export class AccountFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.accounts.find(d => d.name === this.account.name)) {
-      this.toggleError();
-    } else {
       this.accountService.add(this.account).subscribe(d => {
         this.toggleSuccess();
+      },
+        error => {
+        this.toggleError();
+        this.errorMsg = error;
       });
     }
-  }
 
   toggleSuccess() {
     this._toggleSuccess();
@@ -46,6 +47,6 @@ export class AccountFormComponent implements OnInit {
   }
 
   _toggleError() {
-    this.sameName === false ? this.sameName = true : this.sameName = false;
+    this.error === false ? this.error = true : this.error = false;
   }
 }

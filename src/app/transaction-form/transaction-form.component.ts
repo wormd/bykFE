@@ -29,7 +29,8 @@ export class TransactionFormComponent implements OnInit {
   targetModel: Account;
   dateModel: NgbDateStruct;
 
-  sameAccount = false;
+  error = false;
+  errorMsg: string;
   submitted = false;
 
   constructor(private router: Router, private transactionService: TransactionService,
@@ -51,34 +52,23 @@ export class TransactionFormComponent implements OnInit {
     map(term => this.accounts.filter(origin => new RegExp(term, 'mi').test(origin.name)).slice(0, 10))
   )
 
+
   ngOnInit() {
-    // this.accountService.getAll().subscribe(d => { this.accounts = d; });
     this.dateModel = this.calendar.getToday();
   }
 
   onSubmit() {
-    this.sameAccount = false;
-
     this.transaction.date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
     this.transaction.target = this.targetModel.id;
+    this.transaction.origin = this.originModel && this.originModel.id;
+    this.transaction.origin = !this.originModel && this.showingAccount.id;
 
-    if (this.originModel === undefined) {
-      this.originModel = this.showingAccount;
-    }
+    this.transactionService.add(this.transaction)
+      .subscribe(d => {
+          this.toggleSuccess();
+          this.resetFields();
+        });
 
-    if (this.originModel.id !== this.targetModel.id) {
-      this.submitTransaction();
-    } else {
-      this.toggleError();
-    }
-  }
-
-  submitTransaction() {
-    this.transactionService.add(this.originModel.id, this.transaction)
-    .subscribe(d => {
-      this.toggleSuccess();
-      this.resetFields();
-    });
   }
 
   resetFields() {
@@ -100,6 +90,6 @@ export class TransactionFormComponent implements OnInit {
   }
 
   _toggleError() {
-    this.sameAccount === false ? this.sameAccount = true : this.sameAccount = false;
+    this.error === false ? this.error = true : this.error = false;
   }
 }

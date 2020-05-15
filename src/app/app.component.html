@@ -1,20 +1,32 @@
 <div id="page-wrapper" class="d-flex">
 <!--  left nav -->
-  <nav class="bg-light border-right" [ngbCollapse]="!navShow" style="min-height: 100vh; width:160px;">
-    <div class="border-bottom text-center" style="height: 56px">
+  <nav id="sidenav" class="" [ngbCollapse]="!navShow" style="min-height: 100vh; width:160px; ">
+    <div class="text-center" style="height: 56px; background: #7e818d;">
       <h2 class="navbar-brand">{{ title }}</h2>
     </div>
-    <ul class="navbar navbar-nav mr-auto">
+    <ul class="navbar navbar-nav m-0 p-0 mt-2" style="align-items: normal;">
+      <li class="nav-item">
+        <a routerLink="/" class="nav-link pl-2">Homepage</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/employees" class="nav-link pl-2">Employees</a>
+      </li>
+
+      <li class="nav-item" (click)="dropdownShow = !dropdownShow">
+        <a routerLink="/account" class="nav-link pl-2">Accounts<i class="fa fa-caret-down"></i></a>
+      </li>
+      <div class="" [hidden]="dropdownShow">
         <li class="nav-item">
-          <a routerLink="/employees" class="nav-link">Employees</a>
+          <a routerLink="/cashbook" class="nav-link pl-4">Transactions</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/cashbook" class="nav-link">Cashbook</a>
+          <a routerLink="/cashbook" class="nav-link pl-4">Cashbook</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/account" class="nav-link">Accounts</a>
+          <a routerLink="/cashbook" class="nav-link pl-4">Extract</a>
         </li>
-      </ul>
+      </div>
+    </ul>
   </nav>
   <!--  left nav -->
   <!--  right side wrapper -->

@@ -5,8 +5,10 @@ import { TransactionService } from '../_service/transaction.service';
 
 import { Transaction } from '../_model/transaction';
 import { Account } from '../_model/account';
-import { Observable } from 'rxjs';
+import {observable, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-transactions-list',
@@ -24,6 +26,7 @@ export class TransactionsListComponent implements OnInit {
   monthIndex: number;
   yearIndex: number;
   accountModel: Account;
+  total = 0;
 
   formatter = (account: Account) => account.name;
 
@@ -37,6 +40,7 @@ export class TransactionsListComponent implements OnInit {
               private router: Router,
               private transService: TransactionService,
               private location: Location,
+              private modalService: NgbModal
               ) {
     const year = new Date().getFullYear();
     this.years = [year - 1, year, year + 1];
@@ -52,23 +56,36 @@ export class TransactionsListComponent implements OnInit {
     });
   }
 
-  showAmount(target: number): string {
-    return parseFloat(String(target)).toFixed(2);
+  onClickDelete(id: string) {
+    const deleteComp = this.modalService.open(ConfirmDialogComponent);
+    const trans = this.transactions.find(i => +i.id === +id);
+    deleteComp.componentInstance.dict = {date: trans.date, description: trans.descr};
+    deleteComp.result.then(res => {
+      if (res === 'Ok click') {
+        this.transService.delete(this.account.id, id).subscribe(i => this.getTransactions());
+      }
+    });
   }
 
-  delTransaction(id: string) {
-    this.transService.delete(id);
-  }
-
-  getAccountName(accountId: string): string {
-    return this.accounts.find(x => +x.id === +accountId).name;
+  getAccountName(id) {
+    return this.accounts.find(x => +x.id === +id).name;
   }
 
   getTransactions() {
     const after = new Date(this.year, this.month - 1, 1);
     const before = new Date(this.year, this.month, 0);
     this.location.go('/account/' + this.account.id, this.query);
-    this.transService.get(this.account.id, after, before).subscribe(data => this.transactions = data);
+    this.transService.get(this.account.id, after, before).subscribe(
+      data => {
+        this.transactions = data;
+        console.log(this.transactions.length);
+        this.transactions.map(i => {
+          if (i.target !== this.account.id) {
+            i.amount *= -1;
+          }
+          this.total += +i.amount;
+        });
+      });
   }
 
   changeMonth(index: any) {
@@ -88,6 +105,10 @@ export class TransactionsListComponent implements OnInit {
   changeAccount(item) {
     this.account = item.item;
     const query = `month=${this.month}&year=${this.year}`;
-    this.location.go('/account/' + this.account.id, this.query);
+    this.getTransactions();
+  }
+
+  beautifyNum(target: number) {
+    return parseFloat(String(target)).toFixed(2);
   }
 }

@@ -24,6 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
         'Content-Type': 'application/json'
       }});
     }
+    // console.log(JSON.stringify(request.body));
     return next.handle(request).pipe(tap(()  => {}, err => {
       if (err instanceof HttpErrorResponse && err.status === 401) {
         localStorage.removeItem('token');

@@ -16,9 +16,7 @@ export class AccountPageComponent implements OnInit {
 
   accounts: Account[];
 
-  account: any;
-  private routedAccountId = 0;
-
+  account: Account;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -32,15 +30,9 @@ export class AccountPageComponent implements OnInit {
     this.accountService.getAll().subscribe(data => {
       this.activatedRoute.params.subscribe(par => {
         this.accounts = data;
-        // not receiving account/:id means it's the mainpage, so we set to the first account in the DB.
-        this.setAccount(par);
-        this.location.go('/account/' + this.routedAccountId + '');
+        this.account = this.accounts[0];
+        this.location.go('/account/' + this.account.id);
       });
     });
-  }
-
-  setAccount(par) {
-    (!this.routedAccountId) ? this.routedAccountId = 0 : this.routedAccountId = par.id;
-    this.account = this.accounts.find(x => +x.id === +this.routedAccountId);
   }
 }

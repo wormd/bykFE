@@ -5,11 +5,11 @@ import {TransactionService} from '../_service/transaction.service';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-filter-pagination',
-  templateUrl: './filter-pagination.component.html',
-  styleUrls: ['./filter-pagination.component.css']
+  selector: 'app-pagination',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.css']
 })
-export class FilterPaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit {
 
   @Input()
   labels: string[];
@@ -38,7 +38,7 @@ export class FilterPaginationComponent implements OnInit {
 
   onNext(incr) {
     this.currentIndex += incr;
-    this.selected = this.labels[this.currentIndex]
+    this.selected = this.labels[this.currentIndex];
     this.filterclick.emit(this.currentIndex);
   }
 }
