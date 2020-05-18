@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import { Account } from '../_model/account';
+import { Account } from '../../_model/account';
 
 
 @Component({
@@ -13,9 +13,12 @@ export class AccountListComponent implements OnInit {
 
   @Input() accounts: Account[];
 
+
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
 }

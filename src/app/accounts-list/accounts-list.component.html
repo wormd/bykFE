@@ -1,0 +1,53 @@
+<div class="">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li ngbNavItem>
+      <a ngbNavLink>Add Account</a>
+      <ng-template ngbNavContent>
+        <app-account-form [accounts]="accounts"></app-account-form>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="border-right border-left border-bottom"></div>
+
+  <nav class="navbar pr-0 pl-0">
+    <div class="d-flex mr-auto">
+      <input id='account-filter' #filterInput type="text" class="form-control"
+             (input)="filterText(filterInput.value)"
+             placeholder="Filter"/>
+    </div>
+    <div class="ml-2 mt-auto">
+      <!--      RIGHT FILTERS -->
+    </div>
+  </nav>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th scope="col" style="width: 3%;">&nbsp;</th>
+      <th scope="col" style="width: 10%;">Name</th>
+      <th scope="col" style="width: 67%;">Description</th>
+      <th scope="col" style="width: 10%;">Total</th>
+      <th scope="col" style="width: 10%">Created</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngIf="!accounts" class="spinner-border" role="status">
+      <td class="d-flex justify-content-center sr-only" colspan="5">Loading...</td>
+    </tr>
+    <tr *ngIf="accounts && accounts.length === 0">
+      <td colspan="5" class="text-center">Create a new account</td>
+    </tr>
+    <tr *ngFor="let acc of accounts; let i = index" class="pt-1 pb-1">
+      <td><i appClassOnHover type="button" class="btn fa bg-transparent"
+                  [default]="'fa-star-o'"
+                  [active]="'fa-star'"
+                  [hover]="'fa-star'"
+                  (aclick)="starClick(acc.id)"></i></td>
+      <td routerLink="/account/{{acc.id}}">{{ acc.name }}</td>
+      <td routerLink="/account/{{acc.id}}">{{ acc.descr }}</td>
+      <td routerLink="/account/{{acc.id}}">&euro; {{ beautifyNum(acc.total) }}</td>
+      <td routerLink="/account/{{acc.id}}">{{ acc.created }}</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>

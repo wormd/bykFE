@@ -33,13 +33,9 @@ export class AccountService {
     return this.http.put<Account>(this.url, account).subscribe(d => this.update());
   }
 
-  // public getMulti(ids: string): Observable<Account[]> {
-  //   return this.http.get<Account[]>(this.url + '?ids=' + ids);
-  // }
-
-  // public get(id: string): Observable<Account> {
-  //   return this.http.get<Account>(this.url + '/' + id);
-  // }
+  public getOne(id: string): Observable<Account> {
+    return this.http.get<Account>(this.url + '/' + id);
+  }
 
   public update() {
     return this.http.get<Account[]>(this.url).subscribe(d => {

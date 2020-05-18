@@ -48,7 +48,7 @@ export class TransactionsListComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(par => {
-      (par.month) ? this.month = par.month : this.month = (new Date()).getMonth();
+      (par.month) ? this.month = par.month : this.month = (new Date()).getMonth() + 1;
       this.monthIndex = this.month - 1;
       (par.year) ? this.year = par.year : this.year = (new Date()).getFullYear();
       this.yearIndex = this.years.findIndex(x => +x === +this.year);
