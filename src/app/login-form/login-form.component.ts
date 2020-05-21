@@ -42,7 +42,6 @@ export class LoginFormComponent implements OnInit {
       this.router.navigate(['/']);
       location.reload();
     }, e => {
-      // TODO: fix error handling
       this.error = true;
       this.errormsg = e;
       this.loading = false;
