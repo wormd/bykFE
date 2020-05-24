@@ -7,6 +7,7 @@ import { Account } from '../../_model/account';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import {AlertService} from '../../_service/alert.service';
 
 
 @Component({
@@ -30,11 +31,11 @@ export class TransactionFormComponent implements OnInit {
   dateModel: NgbDateStruct;
 
   error = false;
-  errorMsg: string;
-  submitted = false;
+  success = false;
 
   constructor(private router: Router, private transactionService: TransactionService,
-              private accountService: AccountService, private calendar: NgbCalendar) {}
+              private accountService: AccountService, private calendar: NgbCalendar,
+              private alertService: AlertService) {}
 
   formatter = (account: Account) => account.name;
 
@@ -60,36 +61,23 @@ export class TransactionFormComponent implements OnInit {
   onSubmit() {
     this.transaction.date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
     this.transaction.target = this.targetModel.id;
-    this.transaction.origin = this.originModel && this.originModel.id;
-    this.transaction.origin = !this.originModel && this.showingAccount.id;
+    if (this.originModel) {
+      this.transaction.origin = this.originModel.id;
+    } else {
+      this.transaction.origin = this.showingAccount.id;
+    }
 
     this.transactionService.add(this.transaction)
       .subscribe(d => {
-          this.toggleSuccess();
-          this.resetFields();
+        this.alertService.message('Transaction added', 'success');
+        this.alertService.emitTick();
+        this.alertService.tick().subscribe(e => this.success = e);
+        this.resetFields();
         });
 
   }
 
   resetFields() {
     this.transaction = new Transaction();
-  }
-
-  toggleSuccess() {
-    this._toggleSuccess();
-    setTimeout(() => this._toggleSuccess(), 3000);
-  }
-
-  toggleError() {
-    this._toggleError();
-    setTimeout(() => this._toggleError(), 3000);
-  }
-
-  _toggleSuccess() {
-    this.submitted === true ? this.submitted = false : this.submitted = true;
-  }
-
-  _toggleError() {
-    this.error === false ? this.error = true : this.error = false;
   }
 }

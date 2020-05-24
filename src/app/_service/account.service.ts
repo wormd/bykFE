@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Account } from '../_model/account';
 import {Observable, Subject} from 'rxjs';
 import {Transaction} from '../_model/transaction';
+import {share} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +39,16 @@ export class AccountService {
   }
 
   public update() {
-    return this.http.get<Account[]>(this.url).subscribe(d => {
+    this.http.get<Account[]>(this.url).subscribe(d => {
       this.list.next(d);
     });
+  }
+
+  public refreshTotal(id: string) {
+    const res = this.http.get<Account>(`${this.url}/${id}/total`).pipe(share());
+    res.subscribe(d => {
+      this.update();
+    });
+    return res;
   }
 }

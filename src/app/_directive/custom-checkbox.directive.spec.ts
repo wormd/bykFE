@@ -1,7 +1,7 @@
-import { ClassOnHoverDirective } from './class-on-hover.directive';
+import { CustomCheckboxDirective } from './custom-checkbox.directive';
 import {ElementRef} from '@angular/core';
 
-describe('ClassOnHoverDirective', () => {
+describe('CustomCheckboxDirective', () => {
   it('should create an instance', () => {
     // const directive = new ClassOnHoverDirective(el: ElementRef);
     // expect(directive).toBeTruthy();

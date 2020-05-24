@@ -10,11 +10,12 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../_service/auth.service';
 import {catchError, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {AlertService} from '../_service/alert.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private alertService: AlertService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = localStorage.getItem('token');
@@ -24,11 +25,16 @@ export class JwtInterceptor implements HttpInterceptor {
         'Content-Type': 'application/json'
       }});
     }
-    // console.log(JSON.stringify(request.body));
+    if (request.body) {
+      console.log(JSON.stringify(request.body));
+    }
     return next.handle(request).pipe(tap(()  => {}, err => {
       if (err instanceof HttpErrorResponse && err.status === 401) {
         localStorage.removeItem('token');
         this.router.navigate(['login']);
-      }}));
+      }
+      this.alertService.message(`Error: ${err.status}, message ${err.message}`, 'danger');
+      this.alertService.emitTick();
+    }));
   }
 }

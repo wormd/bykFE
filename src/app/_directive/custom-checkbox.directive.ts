@@ -1,26 +1,32 @@
 import {Directive, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2} from '@angular/core';
 
 @Directive({
-  selector: '[appClassOnHover]'
+  selector: '[appCustomCheckbox]'
 })
-export class ClassOnHoverDirective implements OnInit {
+export class CustomCheckboxDirective implements OnInit {
 
   @Input() default: string;
   @Input() active: string;
   @Input() hover: string;
   @Output() aclick: EventEmitter<any> = new EventEmitter();
-  activeBool = false;
+  @Input() clicked: boolean;
   actual: string;
   el: any;
 
   constructor(private elRef: ElementRef, private renderer: Renderer2) {
     this.el = elRef.nativeElement;
-
   }
 
   ngOnInit() {
+    if (this.clicked === undefined) {
+      this.clicked = false;
+    }
     this.actual = this.default;
-    this.renderer.addClass(this.el, this.default);
+    if (this.clicked) {
+      this.renderer.addClass(this.el, this.active);
+    } else {
+      this.renderer.addClass(this.el, this.default);
+    }
   }
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -28,7 +34,7 @@ export class ClassOnHoverDirective implements OnInit {
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    if (this.activeBool) {
+    if (this.clicked) {
       this.change(this.active);
     } else {
       this.change(this.default);
@@ -42,7 +48,7 @@ export class ClassOnHoverDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    this.activeBool ? this.activeBool = false : this.activeBool = true;
+    this.clicked ? this.clicked = false : this.clicked = true;
     this.change(this.active);
     this.aclick.emit();
   }

@@ -4,7 +4,7 @@
         <div class="form-group">
           <div class="input-group mr-2">
             <input class="form-control" placeholder="yyyy-mm-dd"
-                   [class.submit-success]="submitted"
+                   [class.submit-success]="success"
                    [class.submit-error]="error"
                    name="dp" [(ngModel)]="dateModel"
                    ngbDatepicker
@@ -19,7 +19,7 @@
             <input type="text" class="form-control mr-2"
                     placeholder="Description"
                     name="descr"
-                    [class.submit-success]="submitted"
+                    [class.submit-success]="success"
                     [class.submit-error]="error"
                     [(ngModel)]="transaction.descr"
                     required
@@ -30,7 +30,7 @@
 
             <input type="number" class="form-control mr-2"
                     placeholder="1000.00" name="total"
-                    [class.submit-success]="submitted"
+                    [class.submit-success]="success"
                     [class.submit-error]="error"
                     [(ngModel)]="transaction.amount"
                     required
@@ -40,7 +40,7 @@
             <input id='target-account' type="text" name='target-account'
                     class="form-control mr-2"
                     placeholder="Target Account"
-                    [class.submit-success]="submitted"
+                    [class.submit-success]="success"
                     [class.submit-error]="error"
                     [(ngModel)]="targetModel"
                     [ngbTypeahead]="searchTarget"
@@ -52,7 +52,7 @@
 
             <input id='origin-account' type="text" name='origin-account' class="form-control mr-2"
                    placeholder="Origin Account"
-                    [class.submit-success]="submitted"
+                    [class.submit-success]="success"
                     [class.submit-error]="error"
                     [class.error]="error"
                     [(ngModel)]="originModel"
@@ -64,10 +64,8 @@
         <div *ngIf="showingAccount">
             <button type="submit" class="btn btn-success" [disabled]="!lineForm.form.valid">Add</button>
         </div>
+      {{ success }}
     </form>
-    <ngb-alert *ngIf="error" class="mt-3 mb-0" type="danger" [dismissible]="false">
-        {{ errorMsg }}
-    </ngb-alert>
 <!--    transaction: {{ transaction | json }}-->
 
 </div>

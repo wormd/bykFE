@@ -30,8 +30,11 @@ export class AccountPageComponent implements OnInit {
     this.accountService.getAll().subscribe(data => {
       this.activatedRoute.params.subscribe(par => {
         this.accounts = data;
-        this.account = this.accounts[0];
-        this.location.go('/account/' + this.account.id);
+        if (par.id) {
+          this.account = this.accounts.find(i => +i.id === +par.id);
+        } else {
+          this.account = this.accounts[0];
+        }
       });
     });
   }

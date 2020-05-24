@@ -10,6 +10,7 @@ import {Transaction} from '../_model/transaction';
 export class ConfirmDialogComponent {
 
   @Input() dict: Record<string, string>;
+  @Input() name: string;
 
   constructor(public modal: NgbActiveModal) {}
 }

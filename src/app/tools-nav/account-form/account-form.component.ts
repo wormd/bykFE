@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Account} from '../../_model/account';
 import {AccountService} from '../../_service/account.service';
+import {AlertService} from '../../_service/alert.service';
+import {Transaction} from '../../_model/transaction';
 
 @Component({
   selector: 'app-account-form',
@@ -10,43 +12,30 @@ import {AccountService} from '../../_service/account.service';
 export class AccountFormComponent implements OnInit {
 
   account = new Account();
-  submitted = false;
+  success = false;
   error = false;
-  errorMsg: string;
 
   @Input()
   accounts: Account[];
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private alertService: AlertService) { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
       this.accountService.add(this.account).subscribe(d => {
-        this.toggleSuccess();
+        this.alertService.message('Account added.', 'success');
+        this.alertService.emitTick();
+        this.alertService.tick().subscribe(e => this.success = e);
+        this.resetFields();
       },
         error => {
-        this.toggleError();
-        this.errorMsg = error;
+          this.alertService.tick().subscribe(e => this.error = e);
       });
-    }
-
-  toggleSuccess() {
-    this._toggleSuccess();
-    setTimeout(() => this._toggleSuccess(), 3000);
   }
 
-  toggleError() {
-    this._toggleError();
-    setTimeout(() => this._toggleError(), 3000);
-  }
-
-  _toggleSuccess() {
-    this.submitted === true ? this.submitted = false : this.submitted = true;
-  }
-
-  _toggleError() {
-    this.error === false ? this.error = true : this.error = false;
+  resetFields() {
+    this.account = new Account();
   }
 }

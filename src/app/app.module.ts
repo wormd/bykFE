@@ -22,7 +22,8 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AccountsListComponent } from './accounts-list/accounts-list.component';
-import { ClassOnHoverDirective } from './_directive/class-on-hover.directive';
+import { CustomCheckboxDirective } from './_directive/custom-checkbox.directive';
+import { AlertMessageComponent } from './alert-message/alert-message.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { ClassOnHoverDirective } from './_directive/class-on-hover.directive';
     PaginationComponent,
     ConfirmDialogComponent,
     AccountsListComponent,
-    ClassOnHoverDirective,
+    CustomCheckboxDirective,
+    AlertMessageComponent,
   ],
   entryComponents: [
     ConfirmDialogComponent,

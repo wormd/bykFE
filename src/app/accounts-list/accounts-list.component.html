@@ -23,9 +23,9 @@
   <table class="table table-bordered table-striped">
     <thead>
     <tr>
-      <th scope="col" style="width: 3%;">&nbsp;</th>
+      <th scope="col" style="width: 1%;">&nbsp;</th>
       <th scope="col" style="width: 10%;">Name</th>
-      <th scope="col" style="width: 67%;">Description</th>
+      <th scope="col" style="width: 69%;">Description</th>
       <th scope="col" style="width: 10%;">Total</th>
       <th scope="col" style="width: 10%">Created</th>
     </tr>
@@ -38,15 +38,18 @@
       <td colspan="5" class="text-center">Create a new account</td>
     </tr>
     <tr *ngFor="let acc of accounts; let i = index" class="pt-1 pb-1">
-      <td><i appClassOnHover type="button" class="btn fa bg-transparent"
+      <td><i appCustomCheckbox type="button" class="btn fa bg-transparent"
                   [default]="'fa-star-o'"
+                  [clicked]="starredItems.includes(+acc.id)"
                   [active]="'fa-star'"
                   [hover]="'fa-star'"
-                  (aclick)="starClick(acc.id)"></i></td>
+                  (aclick)="starClick(acc.id)"></i>
+      </td>
       <td routerLink="/account/{{acc.id}}">{{ acc.name }}</td>
       <td routerLink="/account/{{acc.id}}">{{ acc.descr }}</td>
       <td routerLink="/account/{{acc.id}}">&euro; {{ beautifyNum(acc.total) }}</td>
       <td routerLink="/account/{{acc.id}}">{{ acc.created }}</td>
+      <td> <i class="fa fa-refresh" (click)="refreshTotal(acc.id)"></i></td>
     </tr>
     </tbody>
   </table>

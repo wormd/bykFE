@@ -59,6 +59,7 @@ export class TransactionsListComponent implements OnInit {
   onClickDelete(id: string) {
     const deleteComp = this.modalService.open(ConfirmDialogComponent);
     const trans = this.transactions.find(i => +i.id === +id);
+    deleteComp.componentInstance.name = 'transaction';
     deleteComp.componentInstance.dict = {date: trans.date, description: trans.descr};
     deleteComp.result.then(res => {
       if (res === 'Ok click') {
@@ -75,10 +76,10 @@ export class TransactionsListComponent implements OnInit {
     const after = new Date(this.year, this.month - 1, 1);
     const before = new Date(this.year, this.month, 0);
     this.location.go('/account/' + this.account.id, this.query);
+    this.total = 0;
     this.transService.get(this.account.id, after, before).subscribe(
       data => {
         this.transactions = data;
-        console.log(this.transactions.length);
         this.transactions.map(i => {
           if (i.target !== this.account.id) {
             i.amount *= -1;

@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-title">Transaction deletion</h4>
+  <h4 class="modal-title d-flex" id="modal-title"><div class="text-capitalize">{{ name }}</div>&nbsp;deletion</h4>
   <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('cancel click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <p><strong>Are you sure you want to delete this transaction?</strong></p>
+  <p><strong>Are you sure you want to delete this {{ name }}?</strong></p>
   <p *ngFor="let item of dict | keyvalue">{{ item.key }}: <span class="text-primary">{{ item.value}}</span></p>
   <p><span class="text-danger">This operation can not be undone.</span></p>
 </div>
