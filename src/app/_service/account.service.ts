@@ -38,6 +38,11 @@ export class AccountService {
     return this.http.get<Account>(this.url + '/' + id);
   }
 
+  public get(ids: string[]) {
+    console.log(ids.join(','));
+    return this.http.get<Account[]>(this.url + '/', {params: {id: ids.join(',')}});
+  }
+
   public update() {
     this.http.get<Account[]>(this.url).subscribe(d => {
       this.list.next(d);
@@ -45,7 +50,7 @@ export class AccountService {
   }
 
   public refreshTotal(id: string) {
-    const res = this.http.get<Account>(`${this.url}/${id}/total`).pipe(share());
+    const res = this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(share());
     res.subscribe(d => {
       this.update();
     });

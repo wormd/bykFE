@@ -49,14 +49,14 @@
       <tr *ngFor="let line of transactions" class="pt-1 pb-1">
         <td>{{ line.date }}</td>
         <td>{{ line.descr }}</td>
-        <td>&euro; {{ beautifyNum(line.amount) }}</td>
+        <td><app-beautify-num [num]="line.amount"></app-beautify-num></td>
         <td>{{ getAccountName(line.target) }}</td>
         <td><button type="button" class="btn fa fa-info bg-transparent"></button>
         <button type="button" class="btn fa fa-times bg-transparent" (click)="onClickDelete(line.id)"></button></td>
       </tr>
       <tr class="">
         <th scope="col" colspan="2" class="text-right"> Total </th>
-        <th scope="col" colspan="1" class="text-left">&euro; {{ beautifyNum(total) }}</th>
+        <th scope="col" colspan="1" class="text-left"><app-beautify-num [num]="total"></app-beautify-num></th>
         <th scope="col" colspan="2" class=""></th>
       </tr>
     </tbody>

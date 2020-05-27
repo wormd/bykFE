@@ -33,10 +33,6 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
-  beautifyNum(target: number) {
-    return parseFloat(String(target)).toFixed(2);
-  }
-
   starClick(id: string) {
     if (this.starredItems.includes(+id)) {
       this.starredItems = this.starredItems.filter(e => +e !== +id);

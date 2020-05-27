@@ -24,6 +24,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { AccountsListComponent } from './accounts-list/accounts-list.component';
 import { CustomCheckboxDirective } from './_directive/custom-checkbox.directive';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
+import { BeautifyNumComponent } from './_util/beautify-num/beautify-num.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { AlertMessageComponent } from './alert-message/alert-message.component';
     AccountsListComponent,
     CustomCheckboxDirective,
     AlertMessageComponent,
+    BeautifyNumComponent,
   ],
   entryComponents: [
     ConfirmDialogComponent,

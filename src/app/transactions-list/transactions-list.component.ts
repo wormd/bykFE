@@ -108,8 +108,4 @@ export class TransactionsListComponent implements OnInit {
     const query = `month=${this.month}&year=${this.year}`;
     this.getTransactions();
   }
-
-  beautifyNum(target: number) {
-    return parseFloat(String(target)).toFixed(2);
-  }
 }

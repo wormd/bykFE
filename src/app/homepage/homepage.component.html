@@ -1,2 +1,9 @@
-<div *ngIf="user">Hello, {{ user.username }}
+<div *ngIf="user" class="">
+  <h4>Hello, {{ user.username }}</h4>
+  <div *ngFor="let account of prefs" class="card col-sm-2 d-inline-flex m-2">
+    <div class="card-body">
+      <h5 class="card-title">{{ account.name }}</h5>
+      <h6><app-beautify-num [num]="account.total"></app-beautify-num></h6>
+    </div>
+  </div>
 </div>
