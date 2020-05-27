@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Account } from '../_model/account';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Account} from '../_model/account';
 import {Observable, Subject} from 'rxjs';
-import {Transaction} from '../_model/transaction';
 import {share} from 'rxjs/operators';
 
 @Injectable({
@@ -31,7 +30,7 @@ export class AccountService {
   }
 
   public edit(account: Account) {
-    return this.http.put<Account>(this.url, account).subscribe(d => this.update());
+    return this.http.put<Account>(this.url, account).subscribe(() => this.update());
   }
 
   public getOne(id: string): Observable<Account> {
@@ -39,7 +38,6 @@ export class AccountService {
   }
 
   public get(ids: string[]) {
-    console.log(ids.join(','));
     return this.http.get<Account[]>(this.url + '/', {params: {id: ids.join(',')}});
   }
 
@@ -51,7 +49,7 @@ export class AccountService {
 
   public refreshTotal(id: string) {
     const res = this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(share());
-    res.subscribe(d => {
+    res.subscribe(() => {
       this.update();
     });
     return res;

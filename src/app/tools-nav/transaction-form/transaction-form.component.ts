@@ -1,12 +1,10 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { TransactionService } from '../../_service/transaction.service';
-import { AccountService } from '../../_service/account.service';
-import { Transaction } from '../../_model/transaction';
-import { Account } from '../../_model/account';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {TransactionService} from '../../_service/transaction.service';
+import {AccountService} from '../../_service/account.service';
+import {Transaction} from '../../_model/transaction';
+import {Account} from '../../_model/account';
+import {NgbCalendar, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from '../../_service/alert.service';
 
 
@@ -26,8 +24,8 @@ export class TransactionFormComponent implements OnInit {
   @Input()
   showingAccount: Account;
 
-  originModel: Account;
-  targetModel: Account;
+  origin: Account;
+  target: Account;
   dateModel: NgbDateStruct;
 
   error = false;
@@ -37,38 +35,19 @@ export class TransactionFormComponent implements OnInit {
               private accountService: AccountService, private calendar: NgbCalendar,
               private alertService: AlertService) {}
 
-  formatter = (account: Account) => account.name;
-
-  searchTarget = (text$: Observable<string>) => text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    filter(term => term.length >= 1),
-    map(term => this.accounts.filter(target => new RegExp(term, 'mi').test(target.name)).slice(0, 10))
-  )
-
-  searchOrigin = (text$: Observable<string>) => text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    filter(term => term.length >= 1),
-    map(term => this.accounts.filter(origin => new RegExp(term, 'mi').test(origin.name)).slice(0, 10))
-  )
-
 
   ngOnInit() {
     this.dateModel = this.calendar.getToday();
   }
 
   onSubmit() {
-    this.transaction.date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
-    this.transaction.target = this.targetModel.id;
-    if (this.originModel) {
-      this.transaction.origin = this.originModel.id;
-    } else {
-      this.transaction.origin = this.showingAccount.id;
-    }
+    this.transaction.date = new Date(Date.UTC(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day));
+    this.transaction.target = this.target.id;
+    this.origin ? this.transaction.origin = this.origin.id : this.transaction.origin = this.transactionService.filter.account.id;
+
 
     this.transactionService.add(this.transaction)
-      .subscribe(d => {
+      .subscribe(() => {
         this.alertService.message('Transaction added', 'success');
         this.alertService.emitTick();
         this.alertService.tick().subscribe(e => this.success = e);
@@ -79,5 +58,13 @@ export class TransactionFormComponent implements OnInit {
 
   resetFields() {
     this.transaction = new Transaction();
+  }
+
+  selectedTarget(item) {
+    this.target = item;
+  }
+
+  selectedOrigin(item) {
+    this.origin = item;
   }
 }

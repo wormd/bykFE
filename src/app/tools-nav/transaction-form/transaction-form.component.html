@@ -16,53 +16,36 @@
           </div>
         </div>
 
-            <input type="text" class="form-control mr-2"
-                    placeholder="Description"
-                    name="descr"
-                    [class.submit-success]="success"
-                    [class.submit-error]="error"
-                    [(ngModel)]="transaction.descr"
-                    required
-                    #desc="ngModel" />
+        <input type="text" class="form-control mr-2"
+                placeholder="Description"
+                name="descr"
+                [class.submit-success]="success"
+                [class.submit-error]="error"
+                [(ngModel)]="transaction.descr"
+                required
+                #desc="ngModel" />
 
-        <!-- <div [hidden]="desc.valid || desc.pristine" class="alert alert-danger">Description Required</div> -->
+        <input type="number" class="form-control mr-2"
+                placeholder="1000.00" name="total"
+                [class.submit-success]="success"
+                [class.submit-error]="error"
+                [(ngModel)]="transaction.amount"
+                required
+                #cash="ngModel" />
 
-
-            <input type="number" class="form-control mr-2"
-                    placeholder="1000.00" name="total"
-                    [class.submit-success]="success"
-                    [class.submit-error]="error"
-                    [(ngModel)]="transaction.amount"
-                    required
-                    #cash="ngModel" />
-
-
-            <input id='target-account' type="text" name='target-account'
-                    class="form-control mr-2"
-                    placeholder="Target Account"
-                    [class.submit-success]="success"
-                    [class.submit-error]="error"
-                    [(ngModel)]="targetModel"
-                    [ngbTypeahead]="searchTarget"
-                    [inputFormatter]="formatter"
-                    [resultFormatter]="formatter"
-                    required
-                    [editable]='false' />
-
-
-            <input id='origin-account' type="text" name='origin-account' class="form-control mr-2"
-                   placeholder="Origin Account"
-                    [class.submit-success]="success"
-                    [class.submit-error]="error"
-                    [class.error]="error"
-                    [(ngModel)]="originModel"
-                    [ngbTypeahead]="searchOrigin"
-                    [inputFormatter]="formatter"
-                    [resultFormatter]="formatter"
-                    [editable]='false' />
+        <app-account-selector class="mr-2" [accounts]="accounts"
+                              [placeholder]="'Target Account'"
+                              [required]="true"
+                              (selected)="selectedTarget($event)">
+        </app-account-selector>
+          <app-account-selector class="mr-2" [accounts]="accounts"
+                                [placeholder]="'Origin Account'"
+                                (selected)="selectedOrigin($event)">
+          </app-account-selector>
         <!-- Don't show submit button until the origin account is loaded -->
         <div *ngIf="showingAccount">
             <button type="submit" class="btn btn-success" [disabled]="!lineForm.form.valid">Add</button>
+          {{target.name}}
         </div>
     </form>
 <!--    transaction: {{ transaction | json }}-->

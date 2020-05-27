@@ -1,29 +1,15 @@
 
 <nav class="navbar pr-0 pl-0">
   <div class="d-flex mr-auto">
-    <input id='change-account' type="text" class="form-control"
-           placeholder="Go to Account"
-           [(ngModel)]="accountModel"
-           [ngbTypeahead]="accountSearch"
-           [inputFormatter]="formatter"
-           [resultFormatter]="formatter"
-           [editable]='false'
-           (selectItem)="changeAccount($event)"/>
+    <app-account-selector [accounts]="accounts" [placeholder]="'Go to account'"
+                          (selected)="changeAccount($event)"></app-account-selector>
   </div>
-  <div class="ml-2 ml-auto mt-auto">
-    <app-pagination
-      [labels]="months"
-      [currentIndex]="monthIndex"
-      (filterclick)="changeMonth($event)">
-    </app-pagination>
-    </div>
-    <div class="ml-2 mt-auto">
-      <app-pagination
-        [labels]="years"
-        [currentIndex]="yearIndex"
-        (filterclick)="changeYear($event)">
-      </app-pagination>
-    </div>
+  <div class="ml-2 mt-auto">
+    <app-month-bar ></app-month-bar>
+  </div>
+  <div class="ml-2 mt-auto">
+    <app-year-bar></app-year-bar>
+  </div>
 </nav>
 
 <table class="table table-bordered table-striped">
@@ -46,17 +32,17 @@
       <tr *ngIf="transactions && transactions.length === 0">
         <td colspan="5" class="text-center">This period is empty</td>
       </tr>
-      <tr *ngFor="let line of transactions" class="pt-1 pb-1">
+      <tr *ngFor="let line of transactions; let i = index" class="pt-1 pb-1">
         <td>{{ line.date }}</td>
         <td>{{ line.descr }}</td>
-        <td><app-beautify-num [num]="line.amount"></app-beautify-num></td>
+        <td [ngClass]="{'text-danger':line.amount<0}">&euro; {{ line.amount | beautifyNum }}</td>
         <td>{{ getAccountName(line.target) }}</td>
         <td><button type="button" class="btn fa fa-info bg-transparent"></button>
-        <button type="button" class="btn fa fa-times bg-transparent" (click)="onClickDelete(line.id)"></button></td>
+        <button type="button" class="btn fa fa-times bg-transparent" (click)="onClickDelete(i)"></button></td>
       </tr>
       <tr class="">
         <th scope="col" colspan="2" class="text-right"> Total </th>
-        <th scope="col" colspan="1" class="text-left"><app-beautify-num [num]="total"></app-beautify-num></th>
+        <th scope="col" colspan="1" class="text-left" [ngClass]="{'text-danger':total<0}">&euro; {{ total | beautifyNum }}</th>
         <th scope="col" colspan="2" class=""></th>
       </tr>
     </tbody>

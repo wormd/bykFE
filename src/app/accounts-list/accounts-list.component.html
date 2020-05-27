@@ -47,7 +47,7 @@
       </td>
       <td routerLink="/account/{{acc.id}}">{{ acc.name }}</td>
       <td routerLink="/account/{{acc.id}}">{{ acc.descr }}</td>
-      <td routerLink="/account/{{acc.id}}"><app-beautify-num [num]="acc.total"></app-beautify-num></td>
+      <td routerLink="/account/{{acc.id}}" [ngClass]="{'text-danger':acc.total<0}">&euro; {{ acc.total | beautifyNum }}</td>
       <td routerLink="/account/{{acc.id}}">{{ acc.created }}</td>
       <td> <i class="fa fa-refresh" (click)="refreshTotal(acc.id)"></i></td>
     </tr>

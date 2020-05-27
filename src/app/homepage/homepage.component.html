@@ -3,7 +3,7 @@
   <div *ngFor="let account of prefs" class="card col-sm-2 d-inline-flex m-2">
     <div class="card-body">
       <h5 class="card-title">{{ account.name }}</h5>
-      <h6><app-beautify-num [num]="account.total"></app-beautify-num></h6>
+      <h6 [ngClass]="{'text-danger':account.total<0}">&euro; {{ account.total | beautifyNum }}</h6>
     </div>
   </div>
 </div>

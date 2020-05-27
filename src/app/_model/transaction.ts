@@ -7,4 +7,5 @@ export class Transaction {
     date: Date;
     origin: string;
     target: string;
+    created: Date;
 }
