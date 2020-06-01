@@ -22,8 +22,8 @@ export class MonthBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterService.get().subscribe(d => {
-      this.leftCursor = d.after.getMonth();
-      this.rightCursor = d.before.getMonth();
+      this.leftCursor = d.after && d.after.getMonth() || -1;
+      this.rightCursor = d.before && d.before.getMonth() || -1;
     });
   }
 

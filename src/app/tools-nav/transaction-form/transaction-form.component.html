@@ -1,6 +1,5 @@
 <div class="card-body">
-    <form class="form-inline card-text" (ngSubmit)="onSubmit()" #lineForm="ngForm">
-
+    <form class="form-inline card-text" #lineForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <div class="input-group mr-2">
             <input class="form-control" placeholder="yyyy-mm-dd"
@@ -40,12 +39,12 @@
         </app-account-selector>
           <app-account-selector class="mr-2" [accounts]="accounts"
                                 [placeholder]="'Origin Account'"
+                                [required]="originRequired"
                                 (selected)="selectedOrigin($event)">
           </app-account-selector>
         <!-- Don't show submit button until the origin account is loaded -->
-        <div *ngIf="showingAccount">
-            <button type="submit" class="btn btn-success" [disabled]="!lineForm.form.valid">Add</button>
-          {{target.name}}
+        <div *ngIf="accounts">
+            <button type="submit" class="btn btn-success" [disabled]="!(lineForm.form.valid && targetSelected)">Add</button>
         </div>
     </form>
 <!--    transaction: {{ transaction | json }}-->

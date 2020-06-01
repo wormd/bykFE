@@ -3,18 +3,20 @@ import {Account} from '../_model/account';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {TransactionsFilterService} from '../_service/transactions-filter.service';
+import {ControlContainer, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-account-selector',
-  template: `<input id='account-selector' type="text" class="form-control"
+  template: `<input id='{{placeholder}}' name="{{placeholder}}" type="text" class="form-control"
                         placeholder="{{placeholder}}"
                         [(ngModel)]="accountModel"
                         [ngbTypeahead]="accountSearch"
                         [inputFormatter]="formatter"
                         [resultFormatter]="formatter"
                         [editable]="false"
-                        required="{{ required }}"
+                        [required] = required
                         (selectItem)="changeAccount($event)"/>`,
+  // viewProviders: [ { provide: ControlContainer, useExisting: NgForm }],
 })
 export class AccountSelectorComponent implements OnInit {
 

@@ -24,8 +24,8 @@ export class YearBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterService.get().subscribe(d => {
-      this.leftCursor = this.years.findIndex(x => +x === d.after.getFullYear());
-      this.rightCursor = this.years.findIndex(x => +x === d.before.getFullYear());
+      this.leftCursor = d.after && this.years.findIndex(x => +x === d.after.getFullYear()) || -1;
+      this.rightCursor = d.before && this.years.findIndex(x => +x === d.before.getFullYear()) || -1;
     });
   }
 

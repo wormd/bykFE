@@ -19,10 +19,13 @@ export class TransactionsFilterService {
 
   constructor() { }
 
-  setFilter(after: Date, before: Date, account?: Account) {
+  setFilter(after: Date, before: Date, account?: Account, by?: string, page?: number, size?: number) {
     this.toEmitFilter.account = account;
     this.toEmitFilter.after = after;
     this.toEmitFilter.before = before;
+    this.toEmitFilter.by = by;
+    this.toEmitFilter.page = page;
+    this.toEmitFilter.size = size;
   }
 
   emitFilter() {

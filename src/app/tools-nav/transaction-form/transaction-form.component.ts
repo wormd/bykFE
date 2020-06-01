@@ -30,6 +30,8 @@ export class TransactionFormComponent implements OnInit {
 
   error = false;
   success = false;
+  targetSelected = false;
+  originRequired = false;
 
   constructor(private router: Router, private transactionService: TransactionService,
               private accountService: AccountService, private calendar: NgbCalendar,
@@ -38,6 +40,9 @@ export class TransactionFormComponent implements OnInit {
 
   ngOnInit() {
     this.dateModel = this.calendar.getToday();
+    if (!this.showingAccount) {
+      this.originRequired = true;
+    }
   }
 
   onSubmit() {
@@ -61,6 +66,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   selectedTarget(item) {
+    this.targetSelected = true;
     this.target = item;
   }
 
