@@ -15,12 +15,12 @@ export class AlertMessageComponent implements OnInit {
   constructor(private alertService: AlertService) { }
 
   ngOnInit(): void {
-    this.alertService.getObs().subscribe(d => {
+    this.alertService.message$.subscribe(d => {
       this.obj = d;
       if (!this.obj.time) {
         this.obj.time = this.ms;
       }
     });
-    this.alertService.tick().subscribe(d => this.show = d);
+    this.alertService.tick$.subscribe(d => this.show = d);
   }
 }

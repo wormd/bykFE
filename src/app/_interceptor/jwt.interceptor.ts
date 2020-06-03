@@ -33,8 +33,7 @@ export class JwtInterceptor implements HttpInterceptor {
         localStorage.removeItem('token');
         this.router.navigate(['login']);
       } else {
-        this.alertService.message(`Error: ${err.status}, message ${err.message}`, 'danger');
-        this.alertService.emitTick();
+        this.alertService.message(`Code: ${err.status}, Message: ${err.message}`, 'danger');
       }
     }));
   }

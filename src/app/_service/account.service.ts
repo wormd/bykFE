@@ -10,23 +10,21 @@ import {share} from 'rxjs/operators';
 export class AccountService {
 
   private url: string;
-  private list = new Subject<Account[]>();
+  private _list = new Subject<Account[]>();
+  private _accounts;
 
   constructor(private http: HttpClient) {
     this.url = 'http://localhost:8080/accounts';
   }
 
-  public getAll() {
-    return this.list.asObservable();
+  get accounts$() {
+    return this._list.asObservable();
   }
 
   public add(account: Account): Observable<Account> {
-    const sub = new Subject<Account>();
-    this.http.post<Account>(this.url, account).subscribe(d => {
-      this.update();
-      sub.next(d);
-    });
-    return sub.asObservable();
+    const res$ = this.http.post<Account>(this.url, account);
+    res$.subscribe(() => this.update());
+    return res$;
   }
 
   public edit(account: Account) {
@@ -43,15 +41,18 @@ export class AccountService {
 
   public update() {
     this.http.get<Account[]>(this.url).subscribe(d => {
-      this.list.next(d);
+      this._accounts = d;
+      this._list.next(d);
     });
   }
 
   public refreshTotal(id: string) {
-    const res = this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(share());
-    res.subscribe(() => {
-      this.update();
-    });
-    return res;
+    const res$ = this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(share());
+    res$.subscribe(() => this.update());
+    return res$;
+  }
+
+  getAccountName(id) {
+    return this._accounts.find(x => +x.id === +id).name;
   }
 }

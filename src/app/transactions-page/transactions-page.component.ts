@@ -20,43 +20,35 @@ export class TransactionsPageComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private transService: TransactionService,
-              private accountService: AccountService,
-              private filterService: TransactionsFilterService,
+              public transfService: TransactionsFilterService,
+              public transService: TransactionService,
+              public accountService: AccountService,
               private location: Location) { }
 
   ngOnInit(): void {
     this.accountService.update();
-    this.accountService.getAll().subscribe(data => {
+    this.accountService.accounts$.subscribe(data => {
       this.accounts = data;
     });
-    this.transService.resetFilter();
+    this.transfService.resetFilter();
     this.activatedRoute.queryParams.subscribe(par => {
-      par.page ? this.f.page = par.page : this.f.page = 0;
+      par.page ? this.f.page = par.page : this.f.page = 1;
       par.size ? this.f.size = par.size : this.f.size = 100;
       par.by ? this.f.by = par.by : this.f.by = 'date';
-      this.transService.doFilter();
-      this.transService.get().subscribe(d => {
+      this.transfService.doFilter();
+      this.transfService.transactions$.subscribe(d => {
         this.transactions = d;
       });
-      this.location.go('/transactions/', this.transService.getQuery(10));
+      this.location.go('/transactions/', this.transfService.getQuery(10));
     });
   }
 
   get f() {
-    return this.transService.filter;
-  }
-
-  onClickDelete(index: number) {
-    this.transService.deleteDialog(index);
-  }
-
-  getAccountName(id) {
-    return this.accounts.find(x => +x.id === +id).name;
+    return this.transfService.filter;
   }
 
   filterByClick() {
-    this.transService.filter.by = this.filterby;
-    this.transService.doFilter();
+    this.transfService.filter.by = this.filterby;
+    this.transfService.doFilter();
   }
 }

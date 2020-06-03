@@ -39,13 +39,13 @@
     <table class="table table-bordered table-striped">
       <thead>
       <tr>
-        <th scope="col">Created</th>
-        <th scope="col" style="width: 8%">Date</th>
-        <th scope="col" style="width: 60%">Description</th>
-        <th scope="col" style="">Amount</th>
-        <th scope="col">Origin</th>
-        <th scope="col">Target</th>
-        <th scope="col">Actions</th>
+        <th scope="col" style="width: 1%">Created</th>
+        <th scope="col" style="width: 1%">Date</th>
+        <th scope="col" style="">Description</th>
+        <th scope="col" style="width: 1%">Amount</th>
+        <th scope="col" style="width: 1%">Origin</th>
+        <th scope="col" style="width: 1%">Target</th>
+        <th scope="col" style="width: 1%">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -53,19 +53,33 @@
         <td class="d-flex justify-content-center sr-only" colspan="5">Loading...</td>
       </tr>
       <tr *ngIf="transactions && transactions.length === 0" role="status">
-        <td colspan="5" class="text-center">This period is empty</td>
+        <td colspan="7" class="text-center">This period is empty</td>
       </tr>
       <tr *ngFor="let line of transactions; let i = index" class="pt-1 pb-1">
-        <td>{{ line.created | date:'yyyy/MM/dd hh:mm' }}</td>
+        <td>{{ line.created | date:'yyyy-MM-dd hh:mm' }}</td>
         <td>{{ line.date }}</td>
         <td>{{ line.descr }}</td>
         <td [ngClass]="{'text-danger':line.amount<0}">&euro; {{ line.amount | beautifyNum }}</td>
-        <td>{{ getAccountName(line.origin) }}</td>
-        <td>{{ getAccountName(line.target) }}</td>
+        <td>{{ accountService.getAccountName(line.origin) }}</td>
+        <td>{{ accountService.getAccountName(line.target) }}</td>
         <td><button type="button" class="btn fa fa-info bg-transparent"></button>
-          <button type="button" class="btn fa fa-times bg-transparent" (click)="onClickDelete(i)"></button></td>
+          <button type="button" class="btn fa fa-times bg-transparent" (click)="transService.deleteDialog(line)"></button></td>
       </tr>
       </tbody>
     </table>
+  </div>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="transfService.count$ | async" [(page)]="transfService.filter.page" [pageSize]="transfService.filter.size">
+    </ngb-pagination>
+    [{{ transfService.count$ | async }}],
+    [{{ transfService.filter.page }}],
+    [{{ transfService.filter.size }}],
+
+    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="transfService.filter.size">
+      <option [ngValue]="100">100 entries per page</option>
+      <option [ngValue]="250">250 entries per page</option>
+      <option [ngValue]="0">Every entry per page</option>
+    </select>
   </div>
 </div>

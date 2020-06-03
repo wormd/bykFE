@@ -1,12 +1,17 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 import {TransactionsFilter} from '../_model/transactions-filter';
-import {Account} from '../_model/account';
+import { Transaction } from '../_model/transaction';
+import { Account } from '../_model/account';
+import { TransactionService } from './transaction.service';
 
-export interface FilterParams {
+interface paramFilter {
   account?: Account;
-  after: Date;
-  before: Date;
+  after?: Date;
+  before?: Date;
+  by?: string;
+  page?: number;
+  size?: number;
 }
 
 @Injectable({
@@ -14,25 +19,49 @@ export interface FilterParams {
 })
 export class TransactionsFilterService {
 
-  private filter = new ReplaySubject<TransactionsFilter>();
-  public toEmitFilter = new TransactionsFilter();
+  private _transactions = new Subject<Transaction[]>();
+  private _filter = new ReplaySubject<TransactionsFilter>();
+  private _nextFilter = new TransactionsFilter();
 
-  constructor() { }
-
-  setFilter(after: Date, before: Date, account?: Account, by?: string, page?: number, size?: number) {
-    this.toEmitFilter.account = account;
-    this.toEmitFilter.after = after;
-    this.toEmitFilter.before = before;
-    this.toEmitFilter.by = by;
-    this.toEmitFilter.page = page;
-    this.toEmitFilter.size = size;
+  constructor(private service: TransactionService) {
+    this._filter.subscribe(d => this.service.fetchData(d));
+    this.service.transactions$.subscribe(d => this._transactions.next(d));
   }
 
-  emitFilter() {
-    this.filter.next(this.toEmitFilter);
+  set filter(newFilter: paramFilter) {
+    this._nextFilter.account = newFilter.account;
+    this._nextFilter.after = newFilter.after;
+    this._nextFilter.before = newFilter.before;
+    this._nextFilter.by = newFilter.by;
+    this._nextFilter.page = newFilter.page;
+    this._nextFilter.size = newFilter.size;
   }
 
-  get() {
-    return this.filter.asObservable();
+  get transactions$() {
+    return this._transactions.asObservable();
+  }
+
+  get filter() {
+    return this._nextFilter;
+  }
+
+  get filter$() {
+    return this._filter.asObservable();
+  }
+
+  resetFilter() {
+    this.filter = {};
+  }
+
+  doFilter() {
+    this._filter.next(this._nextFilter);
+  }
+
+  get count$() {
+    return this.service.count$;
+  }
+
+  getQuery(slice: number) {
+    return this.service.genParams(this._nextFilter, 10).toString();
   }
 }

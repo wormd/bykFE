@@ -21,13 +21,12 @@ export class AccountPageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private accountService: AccountService,
-              private transactionService: TransactionService,
               private location: Location) {
   }
 
   ngOnInit(): void {
     this.accountService.update();
-    this.accountService.getAll().subscribe(data => {
+    this.accountService.accounts$.subscribe(data => {
       this.activatedRoute.params.subscribe(par => {
         this.accounts = data;
         if (par.id) {

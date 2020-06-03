@@ -1,8 +1,10 @@
 
 <nav class="navbar pr-0 pl-0">
   <div class="d-flex mr-auto">
-    <app-account-selector [accounts]="accounts" [placeholder]="'Go to account'"
+    <form #form="ngForm">
+    <app-account-selector [accounts]="accounts" [placeholder]="'Go to account'" modelName="accountModel"
                           (selected)="changeAccount($event)"></app-account-selector>
+    </form>
   </div>
   <div class="ml-2 mt-auto">
     <app-month-bar ></app-month-bar>
@@ -18,11 +20,11 @@
       <th scope="col" colspan="5" class="border-bottom-0 text-center"> {{ account.name }}</th>
     </tr>
     <tr>
-      <th scope="col" style="width: 8%">Date</th>
-      <th scope="col" style="width: 72%">Description</th>
-      <th scope="col" style="">Amount</th>
-      <th scope="col" style="">Target</th>
-      <th scope="col">Actions</th>
+      <th scope="col" style="width: 1%">Date</th>
+      <th scope="col">Description</th>
+      <th scope="col" style="width: 1%">Amount</th>
+      <th scope="col" style="width: 1%">Target</th>
+      <th scope="col" style="width: 1%">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -36,9 +38,9 @@
         <td>{{ line.date }}</td>
         <td>{{ line.descr }}</td>
         <td [ngClass]="{'text-danger':line.amount<0}">&euro; {{ line.amount | beautifyNum }}</td>
-        <td>{{ getAccountName(line.target) }}</td>
-        <td><button type="button" class="btn fa fa-info bg-transparent"></button>
-        <button type="button" class="btn fa fa-times bg-transparent" (click)="onClickDelete(i)"></button></td>
+        <td>{{ accountService.getAccountName(line.target) }}</td>
+        <td><form class="form-inline"><button type="button" class="btn fa fa-info bg-transparent"></button>
+        <button type="button" class="btn fa fa-times bg-transparent" (click)="transService.deleteDialog(line)"></button></form></td>
       </tr>
       <tr class="">
         <th scope="col" colspan="2" class="text-right"> Total </th>

@@ -3,8 +3,8 @@
         <div class="form-group">
           <div class="input-group mr-2">
             <input class="form-control" placeholder="yyyy-mm-dd"
-                   [class.submit-success]="success"
-                   [class.submit-error]="error"
+            [class.submit-success]="alertService.alert.success"
+            [class.submit-error]="alertService.alert.danger"
                    name="dp" [(ngModel)]="dateModel"
                    ngbDatepicker
                    #d="ngbDatepicker">
@@ -18,35 +18,35 @@
         <input type="text" class="form-control mr-2"
                 placeholder="Description"
                 name="descr"
-                [class.submit-success]="success"
-                [class.submit-error]="error"
+                [class.submit-success]="alertService.alert.success"
+                [class.submit-error]="alertService.alert.danger"
                 [(ngModel)]="transaction.descr"
                 required
                 #desc="ngModel" />
 
         <input type="number" class="form-control mr-2"
                 placeholder="1000.00" name="total"
-                [class.submit-success]="success"
-                [class.submit-error]="error"
+                [class.submit-success]="alertService.alert.success"
+                [class.submit-error]="alertService.alert.danger"
                 [(ngModel)]="transaction.amount"
                 required
                 #cash="ngModel" />
 
         <app-account-selector class="mr-2" [accounts]="accounts"
+                              [modelName]="'target'"
+                              [alerts]="true"
                               [placeholder]="'Target Account'"
-                              [required]="true"
-                              (selected)="selectedTarget($event)">
+                              [required]="true">
         </app-account-selector>
-          <app-account-selector class="mr-2" [accounts]="accounts"
-                                [placeholder]="'Origin Account'"
-                                [required]="originRequired"
-                                (selected)="selectedOrigin($event)">
-          </app-account-selector>
+        <app-account-selector class="mr-2" [accounts]="accounts"
+                              [modelName]="'origin'"
+                              [placeholder]="'Origin Account'"
+                              [required]="originRequired">
+        </app-account-selector>
         <!-- Don't show submit button until the origin account is loaded -->
         <div *ngIf="accounts">
-            <button type="submit" class="btn btn-success" [disabled]="!(lineForm.form.valid && targetSelected)">Add</button>
+            <button type="submit" class="btn btn-success" [disabled]="!lineForm.form.valid">Add</button>
         </div>
     </form>
-<!--    transaction: {{ transaction | json }}-->
 
 </div>

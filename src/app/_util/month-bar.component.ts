@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionsFilterService} from '../_service/transactions-filter.service';
+import {TransactionService} from '../_service/transaction.service';
+import { TransactionsFilterService } from '../_service/transactions-filter.service';
 
 @Component({
   selector: 'app-month-bar',
@@ -18,10 +19,10 @@ export class MonthBarComponent implements OnInit {
   rightCursor: number;
 
 
-  constructor(private filterService: TransactionsFilterService) { }
+  constructor(private service: TransactionsFilterService) { }
 
   ngOnInit(): void {
-    this.filterService.get().subscribe(d => {
+    this.service.filter$.subscribe(d => {
       this.leftCursor = d.after && d.after.getMonth() || -1;
       this.rightCursor = d.before && d.before.getMonth() || -1;
     });
@@ -30,9 +31,9 @@ export class MonthBarComponent implements OnInit {
   changeMonth(indexes: any) {
     this.leftCursor = indexes.left;
     this.rightCursor = indexes.right;
-    this.filterService.toEmitFilter.after.setMonth(this.leftCursor);
-    this.filterService.toEmitFilter.before.setMonth(this.rightCursor + 1);
-    this.filterService.toEmitFilter.before.setDate(0);
-    this.filterService.emitFilter();
+    this.service.filter.after.setMonth(this.leftCursor);
+    this.service.filter.before.setMonth(this.rightCursor + 1);
+    this.service.filter.before.setDate(0);
+    this.service.doFilter();
   }
 }

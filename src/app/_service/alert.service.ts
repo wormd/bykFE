@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,12 @@ export class AlertService {
 
   private subject = new Subject();
 
-  private internalTick = new Subject<boolean>();
+  private _tick = new Subject<boolean>();
+
+  private _alerts  = {
+    danger: false,
+    success: false,
+  }
 
   constructor() { }
 
@@ -22,18 +27,29 @@ export class AlertService {
       this.obj.time = time;
     }
     this.subject.next(this.obj);
+    for (let key in this._alerts) {
+      if (key === type) {
+        this.doTick(key);
+      }
+    }
   }
 
-  getObs() {
+  get message$() {
       return this.subject.asObservable();
   }
 
-  tick() {
-    return this.internalTick.asObservable();
+  get tick$() {
+    return this._tick.asObservable();
   }
 
-  emitTick() {
-    this.internalTick.next(true);
-    setTimeout(() => this.internalTick.next(false), this.obj.time);
+  get alert() {
+    return this._alerts;
+  }
+
+  doTick(key: string) {
+    this._alerts[key] = true;
+    this._tick.next(true);
+    setTimeout(() => this._alerts[key] = false, this.obj.time);
+    setTimeout(() => this._tick.next(false), this.obj.time);
   }
 }

@@ -1,40 +1,46 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Transaction} from '../_model/transaction';
-import {Subject} from 'rxjs';
+import {Subject, ReplaySubject} from 'rxjs';
 import {TransactionsFilter} from '../_model/transactions-filter';
-import {TransactionsFilterService} from './transactions-filter.service';
 import {Account} from '../_model/account';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { last } from 'rxjs/operators';
+
+interface Count {
+  count: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
 
-  private transactions = new Subject<Transaction[]>();
+  private _transactions = new Subject<Transaction[]>();
+  private _lastFilter: TransactionsFilter;
+  private _count = new ReplaySubject<number>();
+
   private readonly url = 'http://localhost:8080/';
   constructor(private http: HttpClient,
-              private filterService: TransactionsFilterService,
-              private modalService: NgbModal) {
-    this.filterService.get().subscribe(d => this.fetchData(d));
+              private modalService: NgbModal,
+              ) {
   }
 
-  public add(line: Transaction) {
-    line.date.toISOString().slice(0, 10);
-    const post = this.http.post<Transaction>(this.url + 'transactions/', line);
-    post.subscribe(() => this.fetchData(this.filter));
+  public add(line: Transaction): Promise<Transaction> {
+    const post = this.http.post<Transaction>(this.url + 'transactions/', line).toPromise()
+    post.then(() => this.fetchData(this._lastFilter));
     return post;
   }
 
   public delete(transId: string) {
-    return this.http.delete(this.url + 'transactions/' + transId).subscribe(() => this.fetchData(this.filter));
+    const post = this.http.delete(this.url + 'transactions/' + transId).toPromise()
+    post.then(() => this.fetchData(this._lastFilter));
+    return post;
   }
 
-  public deleteDialog(index: number) {
+  public deleteDialog(trans: Transaction) {
     const deleteComp = this.modalService.open(ConfirmDialogComponent);
-    const trans = this.transactions[index];
     deleteComp.componentInstance.name = 'transaction';
     deleteComp.componentInstance.dict = {date: trans.date, description: trans.descr};
     deleteComp.result.then(res => {
@@ -45,14 +51,17 @@ export class TransactionService {
   }
 
   public edit(line: Transaction) {
-    return this.http.put(this.url, line);
+    const post = this.http.put<Transaction>(this.url + 'transactions/', line).toPromise()
+    post.then(() => this.fetchData(this._lastFilter));
+    return post;
   }
 
-  public get() {
-    return this.transactions.asObservable();
+  get transactions$() {
+    return this._transactions.asObservable();
   }
 
   fetchData(filter: TransactionsFilter) {
+    this._lastFilter = filter;
     let url = '';
     if (filter.account) {
       url = this.url + 'accounts/' + filter.account.id + '/transactions/';
@@ -60,27 +69,12 @@ export class TransactionService {
       url = this.url + 'transactions/';
     }
     const params = this.genParams(filter);
-    console.log(params);
     this.http.get<Transaction[]>(url, {params}).subscribe(d => {
-      this.transactions.next(d);
+      this._transactions.next(d);
+      if (!filter.account) {
+        this.count();
+      }
     });
-  }
-
-  setFilter(after: Date, before: Date, account?: Account, by?: string, page?: number, size?: number) {
-    this.filterService.setFilter(after, before, account, by, page, size);
-    this.filterService.emitFilter();
-  }
-
-  get filter() {
-    return this.filterService.toEmitFilter;
-  }
-
-  resetFilter() {
-    this.filterService.setFilter(undefined, undefined);
-  }
-
-  doFilter() {
-    this.filterService.emitFilter();
   }
 
   genParams(filter: TransactionsFilter, sliceDates?: number) {
@@ -103,7 +97,11 @@ export class TransactionService {
     return params;
   }
 
-  getQuery(sliceDates: number) {
-    return this.genParams(this.filter, sliceDates).toString();
+  public count() {
+    this.http.get<Count>(this.url + 'transactions/count').subscribe(d => this._count.next(d.count))
+  }
+
+  get count$() {
+    return this._count.asObservable();
   }
 }

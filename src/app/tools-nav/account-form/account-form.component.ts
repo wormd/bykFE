@@ -3,6 +3,7 @@ import {Account} from '../../_model/account';
 import {AccountService} from '../../_service/account.service';
 import {AlertService} from '../../_service/alert.service';
 import {Transaction} from '../../_model/transaction';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-form',
@@ -18,7 +19,7 @@ export class AccountFormComponent implements OnInit {
   @Input()
   accounts: Account[];
 
-  constructor(private accountService: AccountService, private alertService: AlertService) { }
+  constructor(private accountService: AccountService, public alertService: AlertService) { }
 
   ngOnInit(): void {
   }
@@ -26,12 +27,7 @@ export class AccountFormComponent implements OnInit {
   onSubmit() {
       this.accountService.add(this.account).subscribe(d => {
         this.alertService.message('Account added.', 'success');
-        this.alertService.emitTick();
-        this.alertService.tick().subscribe(e => this.success = e);
         this.resetFields();
-      },
-        error => {
-          this.alertService.tick().subscribe(e => this.error = e);
       });
   }
 

@@ -27,9 +27,9 @@ export class AccountsListComponent implements OnInit {
       this.starredItems = [];
     }
     this.accountService.update();
-    this.accountService.getAll().subscribe(data => {
+    this.accountService.accounts$.subscribe(data => {
       this.filterService.set(data);
-      this.accounts = this.filterService.get();
+      this.accounts = data;
     });
   }
 

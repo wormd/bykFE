@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionsFilterService} from '../_service/transactions-filter.service';
+import {TransactionService} from '../_service/transaction.service';
+import { TransactionsFilterService } from '../_service/transactions-filter.service';
 
 @Component({
   selector: 'app-year-bar',
@@ -17,13 +18,13 @@ export class YearBarComponent implements OnInit {
   leftCursor: number;
   rightCursor: number;
 
-  constructor(private filterService: TransactionsFilterService) {
+  constructor(private service: TransactionsFilterService) {
     const year = new Date().getFullYear();
     this.years = [year - 1, year, year + 1];
   }
 
   ngOnInit(): void {
-    this.filterService.get().subscribe(d => {
+    this.service.filter$.subscribe(d => {
       this.leftCursor = d.after && this.years.findIndex(x => +x === d.after.getFullYear()) || -1;
       this.rightCursor = d.before && this.years.findIndex(x => +x === d.before.getFullYear()) || -1;
     });
@@ -32,8 +33,8 @@ export class YearBarComponent implements OnInit {
   changeYear(indexes: any) {
     this.leftCursor = indexes.left;
     this.rightCursor = indexes.right;
-    this.filterService.toEmitFilter.after.setFullYear(this.years[this.leftCursor]);
-    this.filterService.toEmitFilter.before.setFullYear(this.years[this.rightCursor]);
-    this.filterService.emitFilter();
+    this.service.filter.after.setFullYear(this.years[this.leftCursor]);
+    this.service.filter.before.setFullYear(this.years[this.rightCursor]);
+    this.service.doFilter();
   }
 }
