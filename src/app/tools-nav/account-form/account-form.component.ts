@@ -2,8 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Account} from '../../_model/account';
 import {AccountService} from '../../_service/account.service';
 import {AlertService} from '../../_service/alert.service';
-import {Transaction} from '../../_model/transaction';
-import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-form',
@@ -25,7 +23,7 @@ export class AccountFormComponent implements OnInit {
   }
 
   onSubmit() {
-      this.accountService.add(this.account).subscribe(d => {
+      this.accountService.add(this.account).then(d => {
         this.alertService.message('Account added.', 'success');
         this.resetFields();
       });

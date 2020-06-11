@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {TransactionsFilter} from '../_model/transactions-filter';
-import { Transaction } from '../_model/transaction';
-import { Account } from '../_model/account';
-import { TransactionService } from './transaction.service';
+import {Transaction} from '../_model/transaction';
+import {Account} from '../_model/account';
+import {TransactionService} from './transaction.service';
 
-interface paramFilter {
+interface ParamFilter {
   account?: Account;
+  accounts?: Account[];
   after?: Date;
   before?: Date;
   by?: string;
@@ -20,7 +21,7 @@ interface paramFilter {
 export class TransactionsFilterService {
 
   private _transactions = new Subject<Transaction[]>();
-  private _filter = new ReplaySubject<TransactionsFilter>();
+  private _filter = new Subject<TransactionsFilter>();
   private _nextFilter = new TransactionsFilter();
 
   constructor(private service: TransactionService) {
@@ -28,13 +29,15 @@ export class TransactionsFilterService {
     this.service.transactions$.subscribe(d => this._transactions.next(d));
   }
 
-  set filter(newFilter: paramFilter) {
+  set filter(newFilter: ParamFilter) {
     this._nextFilter.account = newFilter.account;
+    this._nextFilter.accounts = newFilter.accounts;
     this._nextFilter.after = newFilter.after;
     this._nextFilter.before = newFilter.before;
     this._nextFilter.by = newFilter.by;
     this._nextFilter.page = newFilter.page;
     this._nextFilter.size = newFilter.size;
+    this.doFilter();
   }
 
   get transactions$() {

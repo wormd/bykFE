@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {Transaction} from '../_model/transaction';
 
 @Component({
   selector: 'app-confirm-dialog',

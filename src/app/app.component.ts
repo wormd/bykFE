@@ -15,10 +15,10 @@ export class AppComponent {
   userShow = false;
   dropdownShow = true;
 
-  constructor(private router: Router, private authService: AuthService, ) {
+  constructor(private router: Router, public authService: AuthService, ) {
     if (authService.loggedIn()) {
-      this.authService.getCurrentUser().subscribe(
-        x => {this.user = x; });
+      this.authService.fetchCurrentUser();
+      this.authService.currentUser$.subscribe(d => this.user = d);
     } else {
       this.logout();
     }
@@ -28,5 +28,4 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
 }

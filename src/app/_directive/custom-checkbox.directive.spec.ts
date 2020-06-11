@@ -1,5 +1,4 @@
-import { CustomCheckboxDirective } from './custom-checkbox.directive';
-import {ElementRef} from '@angular/core';
+import {CustomCheckboxDirective} from './custom-checkbox.directive';
 
 describe('CustomCheckboxDirective', () => {
   it('should create an instance', () => {

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Employee } from '../_model/employee';
-import { Router, ActivatedRoute } from '@angular/router';
-import { EmployeeService } from '../_service/employee.service';
+import {Component, OnInit} from '@angular/core';
+import {Employee} from '../_model/employee';
+import {ActivatedRoute, Router} from '@angular/router';
+import {EmployeeService} from '../_service/employee.service';
 
 @Component({
   selector: 'app-employee-form',

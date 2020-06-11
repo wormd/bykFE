@@ -14,7 +14,7 @@
   </div>
 </nav>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped overflow-auto">
     <thead>
     <tr class="rounded-top">
       <th scope="col" colspan="5" class="border-bottom-0 text-center"> {{ account.name }}</th>
@@ -35,16 +35,16 @@
         <td colspan="5" class="text-center">This period is empty</td>
       </tr>
       <tr *ngFor="let line of transactions; let i = index" class="pt-1 pb-1">
-        <td>{{ line.date }}</td>
+        <td class="text-nowrap">{{ line.date }}</td>
         <td>{{ line.descr }}</td>
-        <td [ngClass]="{'text-danger':line.amount<0}">&euro; {{ line.amount | beautifyNum }}</td>
-        <td>{{ accountService.getAccountName(line.target) }}</td>
-        <td><form class="form-inline"><button type="button" class="btn fa fa-info bg-transparent"></button>
-        <button type="button" class="btn fa fa-times bg-transparent" (click)="transService.deleteDialog(line)"></button></form></td>
+        <td class="text-nowrap" [ngClass]="{'text-danger':line.amount<0}">&euro; {{ line.amount | beautifyNum }}</td>
+        <td class="text-nowrap">{{ accountService.getAccountName(line.target) }}</td>
+        <td class="text-nowrap"><button type="button" class="btn fa fa-info bg-transparent"></button>
+        <button type="button" class="btn fa fa-times bg-transparent" (click)="transService.deleteDialog(line)"></button></td>
       </tr>
       <tr class="">
         <th scope="col" colspan="2" class="text-right"> Total </th>
-        <th scope="col" colspan="1" class="text-left" [ngClass]="{'text-danger':total<0}">&euro; {{ total | beautifyNum }}</th>
+        <th scope="col" colspan="1" class="text-left" [ngClass]="{'text-danger':total<0}">{{ total | beautifyNum }}</th>
         <th scope="col" colspan="2" class=""></th>
       </tr>
     </tbody>

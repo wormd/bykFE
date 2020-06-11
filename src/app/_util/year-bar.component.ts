@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionService} from '../_service/transaction.service';
-import { TransactionsFilterService } from '../_service/transactions-filter.service';
+import {TransactionsFilterService} from '../_service/transactions-filter.service';
+
+export function mod(n, m) {
+  return ((n % m) + m) % m;
+}
 
 @Component({
   selector: 'app-year-bar',
@@ -25,16 +28,22 @@ export class YearBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.filter$.subscribe(d => {
-      this.leftCursor = d.after && this.years.findIndex(x => +x === d.after.getFullYear()) || -1;
-      this.rightCursor = d.before && this.years.findIndex(x => +x === d.before.getFullYear()) || -1;
+      this.leftCursor = d.after && this.years.findIndex(x => +x === d.after.getFullYear());
+      this.rightCursor = d.before && this.years.findIndex(x => +x === d.before.getFullYear());
     });
   }
 
   changeYear(indexes: any) {
-    this.leftCursor = indexes.left;
-    this.rightCursor = indexes.right;
-    this.service.filter.after.setFullYear(this.years[this.leftCursor]);
-    this.service.filter.before.setFullYear(this.years[this.rightCursor]);
-    this.service.doFilter();
+    if (!(this.leftCursor === this.rightCursor && this.leftCursor === +indexes.left)) {
+      this.f.after = this.f.after || new Date(Date.UTC(2020, 0, 1)); // year will be changed after anyway.
+      this.f.after.setFullYear(this.years[mod(indexes.left, this.years.length)]);
+      this.f.before = this.f.before || new Date(Date.UTC(2020, 11, 31)); // same.
+      this.f.before.setFullYear(this.years[mod(indexes.right, this.years.length)]);
+      this.service.doFilter();
+    }
+  }
+
+  get f() {
+    return this.service.filter;
   }
 }

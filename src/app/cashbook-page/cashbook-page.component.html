@@ -1,0 +1,66 @@
+<div class="">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li ngbNavItem>
+      <a ngbNavLink>Add Transaction</a>
+      <ng-template ngbNavContent>
+        <app-transaction-form [accounts]="accounts"></app-transaction-form>
+      </ng-template>
+    </li>
+    <li ngbNavItem>
+      <a ngbNavLink>Add Account</a>
+      <ng-template ngbNavContent>
+        <app-account-form [accounts]="accounts"></app-account-form>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="border-right border-left border-bottom"></div>
+  <nav class="navbar pr-0 pl-0">
+    <div class="d-flex mr-auto">
+  <!-- left filter -->
+    </div>
+    <div class="ml-2 mt-auto">
+      <app-month-bar ></app-month-bar>
+    </div>
+    <div class="ml-2 mt-auto">
+      <app-year-bar></app-year-bar>
+    </div>
+  </nav>
+
+  <table class="table table-bordered table-striped overflow-auto">
+    <thead>
+    <tr>
+      <th scope="col" colspan="3" class="border-bottom-0"></th>
+      <ng-container *ngFor="let account of selectedAccounts">
+        <th scope="col" colspan="2" class="border-bottom-0"><p class="m-0 text-center">{{ account.name }}</p></th>
+      </ng-container>
+    </tr>
+    <tr>
+      <th scope="col" style="width: 1%"></th>
+      <th scope="col" style="width: 1%">Date</th>
+      <th scope="col">Description</th>
+      <ng-container *ngFor="let account of selectedAccounts">
+        <th scope="col" style="width: 5%;">In</th>
+        <th scope="col" style="width: 5%;">Out</th>
+      </ng-container>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngIf="!transactions" class="spinner-border" role="status">
+      <td class="d-flex justify-content-center sr-only" colspan="5">Loading...</td>
+    </tr>
+    <tr *ngIf="transactions && transactions.length === 0">
+      <td colspan="5" class="text-center">This period is empty</td>
+    </tr>
+    <tr *ngFor="let line of transactions; let i = index" class="pt-1 pb-1">
+      <td class="text-nowrap"><button type="button" class="btn fa fa-info bg-transparent"></button>
+        <button type="button" class="btn fa fa-times bg-transparent" (click)="transService.deleteDialog(line)"></button></td>
+      <td class="text-nowrap">{{ line.date }}</td>
+      <td>{{ line.descr }}</td>
+      <ng-container *ngFor="let account of selectedAccounts">
+        <td class="text-nowrap"><p class="float-right m-0">{{ (line.target === account.id) && line.amount | beautifyNum }}</p></td>
+        <td class="text-nowrap"><p class="float-right m-0">{{ (line.origin === account.id) && line.amount | beautifyNum }}</p></td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+</div>

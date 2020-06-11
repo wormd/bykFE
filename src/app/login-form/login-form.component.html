@@ -6,8 +6,8 @@
                placeholder="Username"
                formControlName="user"
                class="form-control"
-               [class.submit-success]="submitted"
-               [class.submit-error]="error"
+               [class.submit-success]="this.alertService.alert.success"
+               [class.submit-error]="this.alertService.alert.danger"
                required
         />
         <div *ngIf="submitted && f.user.errors" class="alert alert-danger">
@@ -20,8 +20,8 @@
              placeholder="Password"
              formControlName="pwd"
              class="form-control"
-             [class.submit-success]="submitted"
-             [class.submit-error]="error"
+             [class.submit-success]="this.alertService.alert.success"
+             [class.submit-error]="this.alertService.alert.danger"
              required
       />
       <div *ngIf="submitted && f.pwd.errors" class="alert alert-danger">
@@ -35,8 +35,4 @@
       </button>
     </div>
   </form>
-  <ngb-alert *ngIf="error" class="mt-3 mb-0" type="danger" [dismissible]="false">
-    {{ errormsg }}
-  </ngb-alert>
-  <!-- {{ loginForm | json }} -->
 </div>

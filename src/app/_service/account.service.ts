@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Account} from '../_model/account';
-import {Observable, Subject} from 'rxjs';
-import {share} from 'rxjs/operators';
+import {ReplaySubject, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import {share} from 'rxjs/operators';
 export class AccountService {
 
   private url: string;
-  private _list = new Subject<Account[]>();
+  private _list = new ReplaySubject<Account[]>();
   private _accounts;
 
   constructor(private http: HttpClient) {
@@ -18,25 +18,24 @@ export class AccountService {
   }
 
   get accounts$() {
+    if (!this._accounts) { this.update(); }
     return this._list.asObservable();
   }
 
-  public add(account: Account): Observable<Account> {
-    const res$ = this.http.post<Account>(this.url, account);
-    res$.subscribe(() => this.update());
-    return res$;
+  public add(account: Account) {
+    return this.http.post<Account>(this.url, account).pipe(tap(() => this.update())).toPromise();
   }
 
   public edit(account: Account) {
-    return this.http.put<Account>(this.url, account).subscribe(() => this.update());
+    return this.http.put<Account>(this.url, account).pipe(tap(() => this.update())).toPromise();
   }
 
-  public getOne(id: string): Observable<Account> {
-    return this.http.get<Account>(this.url + '/' + id);
+  public getOne(id: string) {
+    return this.http.get<Account>(this.url + '/' + id).toPromise();
   }
 
   public get(ids: string[]) {
-    return this.http.get<Account[]>(this.url + '/', {params: {id: ids.join(',')}});
+    return this.http.get<Account[]>(this.url + '/', {params: {id: ids.join(',')}}).toPromise();
   }
 
   public update() {
@@ -47,9 +46,7 @@ export class AccountService {
   }
 
   public refreshTotal(id: string) {
-    const res$ = this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(share());
-    res$.subscribe(() => this.update());
-    return res$;
+    return this.http.get<Account[]>(`${this.url}/${id}/total`).pipe(tap(() => this.update()));
   }
 
   getAccountName(id) {

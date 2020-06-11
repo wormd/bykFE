@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { AccountFilterService } from './account-filter.service';
+import {AccountFilterService} from './account-filter.service';
 
 describe('AccountFilterService', () => {
   let service: AccountFilterService;

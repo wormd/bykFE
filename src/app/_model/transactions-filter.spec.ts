@@ -1,4 +1,4 @@
-import { TransactionsFilter } from './transactions-filter';
+import {TransactionsFilter} from './transactions-filter';
 
 describe('TransactionsFilter', () => {
   it('should create an instance', () => {

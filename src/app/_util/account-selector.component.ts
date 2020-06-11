@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output, Optional, SkipSelf} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Account} from '../_model/account';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {TransactionsFilterService} from '../_service/transactions-filter.service';
 import {ControlContainer, NgForm} from '@angular/forms';
-import { AlertService } from '../_service/alert.service';
+import {AlertService} from '../_service/alert.service';
 
 @Component({
   selector: 'app-account-selector',

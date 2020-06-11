@@ -6,7 +6,7 @@ import {Transaction} from '../../_model/transaction';
 import {Account} from '../../_model/account';
 import {NgbCalendar, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from '../../_service/alert.service';
-import { NgForm } from '@angular/forms';
+import {NgForm} from '@angular/forms';
 
 
 @Component({
@@ -43,7 +43,7 @@ export class TransactionFormComponent implements OnInit {
 
   onSubmit() {
     this.transaction.date = new Date(Date.UTC(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day));
-    this.transaction.target = this.lf.target.id
+    this.transaction.target = this.lf.target.id;
     this.lf.origin ? this.transaction.origin = this.lf.origin.id : this.transaction.origin = this.showingAccount.id;
 
     this.transactionService.add(this.transaction).then(() => {

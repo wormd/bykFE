@@ -1,14 +1,8 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpHeaders, HttpResponse, HttpErrorResponse
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../_service/auth.service';
-import {catchError, tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../_service/auth.service';
+import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {AlertService} from '../_service/alert.service';
 

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'beautifyNum'
@@ -6,6 +6,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BeautifyNumPipe implements PipeTransform {
 
   transform(value: number) {
-    return parseFloat(String(value)).toFixed(2);
+    const res = parseFloat(String(value));
+    if (Number.isNaN(res)) {
+      return undefined;
+    }
+    return '€ ' + res.toFixed(2);
   }
 }

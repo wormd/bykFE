@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Transaction} from '../_model/transaction';
-import {Subject, ReplaySubject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 import {TransactionsFilter} from '../_model/transactions-filter';
-import {Account} from '../_model/account';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { last } from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 interface Count {
   count: number;
@@ -21,22 +20,18 @@ export class TransactionService {
   private _lastFilter: TransactionsFilter;
   private _count = new ReplaySubject<number>();
 
-  private readonly url = 'http://localhost:8080/';
+  private readonly _addr = 'http://localhost:8080/';
   constructor(private http: HttpClient,
               private modalService: NgbModal,
               ) {
   }
 
   public add(line: Transaction): Promise<Transaction> {
-    const post = this.http.post<Transaction>(this.url + 'transactions/', line).toPromise()
-    post.then(() => this.fetchData(this._lastFilter));
-    return post;
+    return this.http.post<Transaction>(this.url, line).pipe(tap(() => this.fetchData(this._lastFilter))).toPromise();
   }
 
   public delete(transId: string) {
-    const post = this.http.delete(this.url + 'transactions/' + transId).toPromise()
-    post.then(() => this.fetchData(this._lastFilter));
-    return post;
+    return this.http.delete(this.url + transId).pipe(tap(() => this.fetchData(this._lastFilter))).toPromise();
   }
 
   public deleteDialog(trans: Transaction) {
@@ -51,9 +46,7 @@ export class TransactionService {
   }
 
   public edit(line: Transaction) {
-    const post = this.http.put<Transaction>(this.url + 'transactions/', line).toPromise()
-    post.then(() => this.fetchData(this._lastFilter));
-    return post;
+    return this.http.put<Transaction>(this.url, line).pipe(tap(() => this.fetchData(this._lastFilter))).toPromise();
   }
 
   get transactions$() {
@@ -62,19 +55,21 @@ export class TransactionService {
 
   fetchData(filter: TransactionsFilter) {
     this._lastFilter = filter;
-    let url = '';
-    if (filter.account) {
-      url = this.url + 'accounts/' + filter.account.id + '/transactions/';
-    } else {
-      url = this.url + 'transactions/';
-    }
     const params = this.genParams(filter);
-    this.http.get<Transaction[]>(url, {params}).subscribe(d => {
-      this._transactions.next(d);
-      if (!filter.account) {
-        this.count();
+    if (filter.accounts) {
+      this.http.get<Transaction[]>(this._addr + 'transactions-m', {params}).
+        subscribe(d => this._transactions.next(d));
+    } else {
+      if (filter.account) {
+        this.http.get<Transaction[]>(this.urlAccount(filter.account), {params})
+          .subscribe(d => this._transactions.next(d));
+      } else {
+        this.http.get<Transaction[]>(this.url, {params}).subscribe(d => {
+          this._transactions.next(d);
+          this.count();
+        });
       }
-    });
+    }
   }
 
   genParams(filter: TransactionsFilter, sliceDates?: number) {
@@ -94,14 +89,26 @@ export class TransactionService {
     if (filter.size) {
       params = params.append('size', String(filter.size));
     }
+    if (filter.accounts) {
+      const ids = filter.accounts.map(a => a.id);
+      params = params.append('ids', ids.join(','));
+    }
     return params;
   }
 
   public count() {
-    this.http.get<Count>(this.url + 'transactions/count').subscribe(d => this._count.next(d.count))
+    this.http.get<Count>(this.url + '/count').subscribe(d => this._count.next(d.count));
   }
 
   get count$() {
     return this._count.asObservable();
+  }
+
+  get url() {
+    return this._addr + 'transactions';
+  }
+
+  urlAccount(account) {
+    return this._addr + 'accounts/' + account.id + '/transactions/';
   }
 }

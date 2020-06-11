@@ -1,4 +1,4 @@
-import { BeautifyNumPipe } from './beautify-num.pipe';
+import {BeautifyNumPipe} from './beautify-num.pipe';
 
 describe('BeautifyNumPipe', () => {
   it('create an instance', () => {

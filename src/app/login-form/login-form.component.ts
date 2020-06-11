@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../_service/auth.service';
+import {AlertService} from '../_service/alert.service';
 
 @Component({
   selector: 'app-login-form',
@@ -17,7 +18,9 @@ export class LoginFormComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private formBuilder: FormBuilder,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              public alertService: AlertService,
+              ) { }
 
   ngOnInit(): void {
     if (this.authService.loggedIn()) {
@@ -34,17 +37,14 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
     this.loading = true;
-
-    this.authService.login(this.f.user.value, this.f.pwd.value).subscribe(d => {
+    this.authService.login(this.f.user.value, this.f.pwd.value).subscribe(() => {
       this.submitted = true;
       this.router.navigate(['/']);
       location.reload();
     }, e => {
-      this.error = true;
-      this.errormsg = e;
       this.loading = false;
+      this.alertService.message('Wrong login', 'danger');
     });
   }
 

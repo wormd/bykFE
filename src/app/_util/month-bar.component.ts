@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionService} from '../_service/transaction.service';
-import { TransactionsFilterService } from '../_service/transactions-filter.service';
+import {TransactionsFilterService} from '../_service/transactions-filter.service';
 
 @Component({
   selector: 'app-month-bar',
@@ -23,17 +22,23 @@ export class MonthBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.filter$.subscribe(d => {
-      this.leftCursor = d.after && d.after.getMonth() || -1;
-      this.rightCursor = d.before && d.before.getMonth() || -1;
+      this.leftCursor = d.after && d.after.getMonth();
+      this.rightCursor = d.before && d.before.getMonth();
     });
   }
 
   changeMonth(indexes: any) {
-    this.leftCursor = indexes.left;
-    this.rightCursor = indexes.right;
-    this.service.filter.after.setMonth(this.leftCursor);
-    this.service.filter.before.setMonth(this.rightCursor + 1);
-    this.service.filter.before.setDate(0);
-    this.service.doFilter();
+    if (!(this.leftCursor === this.rightCursor && this.leftCursor === +indexes.left)) {
+      const now = new Date();
+      this.f.after = this.f.after || new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+      this.f.after.setMonth(indexes.left, 1);
+      this.f.before = this.f.before || new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+      this.f.before.setMonth(indexes.right + 1, 0);
+      this.service.doFilter();
+    }
+  }
+
+  get f() {
+    return this.service.filter;
   }
 }

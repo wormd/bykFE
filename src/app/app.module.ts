@@ -27,6 +27,7 @@ import {MonthBarComponent} from './_util/month-bar.component';
 import {YearBarComponent} from './_util/year-bar.component';
 import {AccountSelectorComponent} from './_util/account-selector.component';
 import {BeautifyNumPipe} from './_pipe/beautify-num.pipe';
+import {CashbookPageComponent} from './cashbook-page/cashbook-page.component';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import {BeautifyNumPipe} from './_pipe/beautify-num.pipe';
     AppComponent,
     EmployeeListComponent,
     EmployeeFormComponent,
-    // CashBookComponent,
+    CashbookPageComponent,
     AccountPageComponent,
     AccountListComponent,
     TransactionsListComponent,

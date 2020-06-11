@@ -1,34 +1,37 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {User} from '../_model/user';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private url: string;
-  private currentUser = new Subject();
+  private _currentUser = new BehaviorSubject<User>(undefined);
 
   constructor(private http: HttpClient) {
     this.url = 'http://localhost:8080';
   }
 
-  getCurrentUser(): Observable<any> {
-      this.http.get<User>(this.url + '/currentUser').subscribe(i => this.currentUser.next(i));
-      return this.currentUser.asObservable();
+  fetchCurrentUser() {
+    this.http.get<User>(this.url + '/currentUser').subscribe(i => this._currentUser.next(i));
+  }
+
+  get currentUser$() {
+    return this._currentUser.asObservable();
   }
 
   login(user, pwd) {
     const ret = new Subject();
-    this.http.post<any>(this.url + '/login',
+    return this.http.post<any>(this.url + '/login',
       {username: user, password: pwd})
-      .subscribe(i => {
-        localStorage.setItem('token', i.token);
-        ret.next(i);
-        this.getCurrentUser();
-      });
-    return ret.asObservable();
+      .pipe(tap(i => {
+      localStorage.setItem('token', i.token);
+      ret.next(i);
+      this.fetchCurrentUser();
+    }));
   }
 
   loggedIn() {
@@ -38,6 +41,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.currentUser = new Subject();
+    this._currentUser.next(undefined);
   }
 }

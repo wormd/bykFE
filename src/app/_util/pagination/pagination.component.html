@@ -1,13 +1,14 @@
 <nav>
   <ul class="pagination pagination-sm my-auto">
     <li class="page-item">
-      <a class="page-link" (click)="onNext(-1)">&laquo;</a>
+      <a class="page-link noselect" (click)="onNext(-1)">&laquo;</a>
     </li>
     <li class="page-item" *ngFor="let label of labels; let i = index" (click)="onSelect(i)" [class.active]="i >= left && i <= right">
-      <a class="page-link" >{{label}}</a>
+      <a class="page-link noselect" >{{label}}</a>
     </li>
     <li class="page-item">
-      <a class="page-link" (click)="onNext(+1)">&raquo;</a>
+      <a class="page-link noselect" (click)="onNext(+1)">&raquo;</a>
     </li>
   </ul>
+<!--  {{ left }} {{ right }}-->
 </nav>

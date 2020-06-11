@@ -24,10 +24,11 @@
     <thead>
     <tr>
       <th scope="col" style="width: 1%;">&nbsp;</th>
-      <th scope="col" style="width: 10%;">Name</th>
+      <th scope="col" style="width: 1%;">Name</th>
       <th scope="col" style="width: 69%;">Description</th>
-      <th scope="col" style="width: 10%;">Total</th>
-      <th scope="col" style="width: 10%">Created</th>
+      <th scope="col" style="width: 1%;">Total</th>
+      <th scope="col" style="width: 1%">Created</th>
+      <th scope="col" style="width: 1%"></th>
     </tr>
     </thead>
     <tbody>
@@ -45,10 +46,10 @@
                   [hover]="'fa-star'"
                   (aclick)="starClick(acc.id)"></i>
       </td>
-      <td routerLink="/account/{{acc.id}}">{{ acc.name }}</td>
-      <td routerLink="/account/{{acc.id}}">{{ acc.descr }}</td>
-      <td routerLink="/account/{{acc.id}}" [ngClass]="{'text-danger':acc.total<0}">&euro; {{ acc.total | beautifyNum }}</td>
-      <td routerLink="/account/{{acc.id}}">{{ acc.created }}</td>
+      <td class="text-nowrap" routerLink="/account/{{acc.id}}">{{ acc.name }}</td>
+      <td class="text-nowrap" routerLink="/account/{{acc.id}}">{{ acc.descr }}</td>
+      <td class="text-nowrap" routerLink="/account/{{acc.id}}" [ngClass]="{'text-danger':acc.total<0}">{{ acc.total | beautifyNum }}</td>
+      <td class="text-nowrap" routerLink="/account/{{acc.id}}">{{ acc.created | date:'yyyy-MM-dd hh:mm' }}</td>
       <td> <i class="fa fa-refresh" (click)="refreshTotal(acc.id)"></i></td>
     </tr>
     </tbody>

@@ -1,11 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AccountService} from '../_service/account.service';
 import {Location} from '@angular/common';
 import {Account} from '../_model/account';
-import {forkJoin} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
-import {TransactionService} from '../_service/transaction.service';
 
 @Component({
   selector: 'app-account-page',
@@ -25,7 +22,7 @@ export class AccountPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accountService.update();
+    // this.accountService.update();
     this.accountService.accounts$.subscribe(data => {
       this.activatedRoute.params.subscribe(par => {
         this.accounts = data;

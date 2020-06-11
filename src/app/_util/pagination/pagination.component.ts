@@ -22,13 +22,15 @@ export class PaginationComponent implements OnInit {
   }
 
   onSelect(index) {
-    if (this.left === this.right && this.left !== index) {
+    if (!(this.left === this.right === index)) {
       this.left = this.right = index;
       this.filterclick.emit({left: this.left, right: this.right});
     }
   }
 
   onNext(incr) {
+    if (this.left === undefined) { this.left = -1; }
+    if (this.right === undefined) { this.right = -1; }
     this.left += incr;
     this.right += incr;
     this.filterclick.emit({left: this.left, right: this.right});

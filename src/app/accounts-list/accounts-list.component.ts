@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AccountService} from '../_service/account.service';
-import { Account } from '../_model/account';
+import {Account} from '../_model/account';
 import {AccountFilterService} from '../_service/account-filter.service';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {Location} from '@angular/common';
 
 @Component({
